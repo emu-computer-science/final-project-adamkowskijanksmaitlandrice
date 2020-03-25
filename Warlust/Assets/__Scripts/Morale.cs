@@ -31,7 +31,6 @@ public class Morale : MonoBehaviour {
 		defenderBarGUI.value = defenderMorale;
     }
 
-
 	public void MoraleLost(Army a, int moraleLost) {
 		if (a == MapController.M.attacker) MoraleGained(MapController.M.defender, moraleLost);
 		else MoraleGained(MapController.M.attacker, moraleLost);
@@ -40,13 +39,15 @@ public class Morale : MonoBehaviour {
 	public void MoraleGained(Army a, int moraleGained) {
 		Army attacker = MapController.M.attacker;
 		Army defender = MapController.M.defender;
+
 		if (a == attacker) {
 			if (attackerMorale <= lowMorale) {
 				moraleGained *= 2;
 			}
 			attackerMorale += moraleGained;
+
 			if (attackerMorale >= 10) {
-				MapController.M.ArmyLost(defender);
+				TMapController.M.ArmyLost(defender);
 			} else if (attackerMorale >= highMorale) {
 				attacker.SetMorale(moraleState.high);
 			} else if (attackerMorale > lowMorale) {
@@ -64,8 +65,9 @@ public class Morale : MonoBehaviour {
 				moraleGained *= 2;
 			}
 			defenderMorale += moraleGained;
+
 			if (defenderMorale >= 10) {
-				MapController.M.ArmyLost(attacker);
+				TMapController.M.ArmyLost(attacker);
 			} else if (defenderMorale >= highMorale) {
 				defender.SetMorale(moraleState.high);
 			} else if (defenderMorale > lowMorale) {

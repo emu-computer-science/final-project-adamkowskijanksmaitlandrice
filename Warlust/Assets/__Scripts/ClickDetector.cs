@@ -33,7 +33,7 @@ public class ClickDetector : MonoBehaviour
                     return;
                 }
             }
-            MapController.M.endMove(cel);
+            TMapController.M.endMove(cel);
         }
     }
 
