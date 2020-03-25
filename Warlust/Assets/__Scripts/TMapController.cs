@@ -52,6 +52,8 @@ public class TMapController : MonoBehaviour
     {
 		if (Input.GetKeyDown("space")) {
 			clearMove();
+            roundState = mapRound.moving;
+            moving = null;
 			print("End of current turn");
 			if (currentTurn == attacker) {
 				currentTurn = defender;
@@ -127,7 +129,7 @@ public class TMapController : MonoBehaviour
             return;
         }
 
-        //print("About to start attack");
+        print("About to start attack");
         clearMove();
         List<Vector3Int> queue = new List<Vector3Int>() { currentTile };
         for (int i = 0; i < minAtkRange - 1; i++)
@@ -215,10 +217,12 @@ public class TMapController : MonoBehaviour
             case unitState.moved:
                 foreach (Vector3Int v in withinRange)
                     if (destTile == v)
-                        //foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
-                            //if (land.WorldToCell(unit.transform.position) == v)
+                        foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
+                            if (land.WorldToCell(unit.transform.position) == v)
                             {
-                                //print(unit.GetComponent<Unit>().TakeDamage(moving.GetComponent<Unit>().Attack()));
+                                int dmg = moving.GetComponent<Unit>().Attack();
+                                print("damage: " + dmg);
+                                print("killed: "+ unit.GetComponent<Unit>().TakeDamage(dmg));
                                 moving.GetComponent<Unit>().currentState = unitState.idle;
                                 roundState = mapRound.moving;
                                 if (currentTurn == attacker) currentTurn = defender;

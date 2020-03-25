@@ -100,7 +100,7 @@ MonoBehaviour:
   maxAtkRange: 3
   atkSplash: 1
   defense: 2
-  attack: 0
+  attack: 3
   land: {fileID: 0}
   currentPlayerTile: {x: 0, y: 0, z: 0}
   currentState: 0

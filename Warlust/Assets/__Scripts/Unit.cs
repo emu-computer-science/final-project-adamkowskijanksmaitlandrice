@@ -112,6 +112,6 @@ public class Unit : MonoBehaviour
 	}
 
 	public void EndTurn() {
-		currentState = unitState.attacked;
+		currentState = unitState.idle;
 	}
 }
