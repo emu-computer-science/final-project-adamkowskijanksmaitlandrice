@@ -34,9 +34,6 @@ public class WMapController : MonoBehaviour
 
         makeUnit(squadron, 'A', 1, -2);
         makeUnit(squadron, 'D', 7, 1);
-
-		attacker.BeginTurn();
-		defender.EndTurn();
     }
 
     // Update is called once per frame
@@ -45,34 +42,27 @@ public class WMapController : MonoBehaviour
 		if (Input.GetKeyDown("space")) {
 			clearMove();
 			print("End of current turn");
-			if (currentTurn == attacker) {
-				currentTurn = defender;
-				attacker.EndTurn();
-				defender.BeginTurn();
-			} else {
-				currentTurn = attacker;
-				attacker.BeginTurn();
-				defender.EndTurn();
-			}
-		}
+			if (currentTurn == attacker) currentTurn = defender;
+			else  currentTurn = attacker;
+        }
     }
 
     public void makeUnit(GameObject prefab, char team, int x, int y)
     {
-        GameObject unit = Instantiate(prefab);
-        Unit unitScript = unit.GetComponent<Unit>();
+        GameObject squad = Instantiate(prefab);
+        Squad squadScript = squad.GetComponent<Squad>();
         Vector3Int v3i = new Vector3Int(x, y, 0);
-        unitScript.currentPlayerTile = v3i;
-        unit.transform.position = land.CellToWorld(unitScript.currentPlayerTile);
+        squadScript.currentPlayerTile = v3i;
+        squad.transform.position = land.CellToWorld(squadScript.currentPlayerTile);
         if (team == 'A')
         {
-            attacker.troops.Add(unitScript);
-            unitScript.army = attacker;
+            attacker.troops.Add(squadScript);
+            squadScript.army = attacker;
         }
         else
         {
-            defender.troops.Add(unitScript);
-            unitScript.army = defender;
+            defender.troops.Add(squadScript);
+            squadScript.army = defender;
         }
     }
 
@@ -82,56 +72,20 @@ public class WMapController : MonoBehaviour
         withinRange = new List<Vector3Int>();
         excludeRange = new List<Vector3Int>();
     }
-
     /*
     public void startMove(GameObject toMove, Vector3Int currentTile, int moveRange)
     {
-        if (roundState != mapRound.moving)
-        {
-            print("roundState != mapRound.moving");
-            return;
-        }
-        if (toMove.GetComponent<Unit>().currentState != unitState.idle)
-        {
-            print("toMove.GetComponent<Unit>().currentState != unitState.idle");
-            return;
-        }
-
-        print("About to start move");
+        //print("About to start move");
         clearMove();
         moving = toMove;
         List<Vector3Int> queue = new List<Vector3Int>() { currentTile };
         for (int i = 0; i < moveRange; i++)
-            queue = updateQueue(queue, 'M', true);
+            queue = updateQueue(queue);
         foreach (Vector3Int v in withinRange)
             highlights.SetTile(v, moveHighlight);
     }
 
-	public void StartAttack(GameObject toAttack, Vector3Int currentTile, int minAtkRange, int maxAtkRange)
-    {
-        if (roundState != mapRound.attacking)
-        {
-            print("roundState != mapRound.attacking");
-            return;
-        }
-        if (toAttack.GetComponent<Unit>().currentState != unitState.moved)
-        {
-            print("toAttack.GetComponent<Unit>().currentState != unitState.moved");
-            return;
-        }
-
-        print("About to start attack");
-        clearMove();
-        List<Vector3Int> queue = new List<Vector3Int>() { currentTile };
-        for (int i = 0; i < minAtkRange - 1; i++)
-            queue = updateQueue(queue, 'A', false);
-        for (int i = 0; i < maxAtkRange - minAtkRange + 1; i++)
-            queue = updateQueue(queue, 'A', true);
-        foreach (Vector3Int v in withinRange)
-            highlights.SetTile(v, attackHighlight);
-    }
-
-    public List<Vector3Int> updateQueue(List<Vector3Int> queue, char mode, bool include)
+    public List<Vector3Int> updateQueue(List<Vector3Int> queue)
     {
         List<Vector3Int> queue2 = new List<Vector3Int>();
         while (queue.Count > 0)
@@ -156,17 +110,7 @@ public class WMapController : MonoBehaviour
                     bool OK = true;
                     foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
                     { 
-                        if (mode == 'M')
-                        {
-                            if (land.WorldToCell(unit.transform.position) == dir)
-                            {
-                                OK = false;
-                                break;
-                            }
-                        }
-                        else
-                                if (land.WorldToCell(unit.transform.position) == dir &&
-                                    unit.GetComponent<Unit>().army == currentTurn)
+                        if (land.WorldToCell(unit.transform.position) == dir)
                         {
                             OK = false;
                             break;
