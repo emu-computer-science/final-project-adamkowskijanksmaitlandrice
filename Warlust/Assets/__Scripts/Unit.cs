@@ -18,7 +18,8 @@ public class Unit : MonoBehaviour
 	public int maxAtkRange;
 	public int atkSplash;
 	public int defense;
-	public int attack; //How much damage the unit deals
+	public int attack = 5; //How much damage the unit deals
+	public int morale = 1;
 
     [Header("Set Dynamically")]
     public Tilemap land;
@@ -78,7 +79,9 @@ public class Unit : MonoBehaviour
     {
 		switch (currentState) {
 			case unitState.idle:
-			TMapController.M.startMove(gameObject, currentPlayerTile, moveRange);
+			if (TMapController.M.currentTurn == _army)
+				TMapController.M.startMove(gameObject, currentPlayerTile, moveRange);
+			else TMapController.M.UnitAttacked(this, currentPlayerTile);
 			break;
 			case unitState.moved:
 			TMapController.M.StartAttack(gameObject, currentPlayerTile, minAtkRange, maxAtkRange);
@@ -94,11 +97,11 @@ public class Unit : MonoBehaviour
 
 	public int Attack() {
 		//currentState = unitState.attacked;
-		return Random.Range(0, attack);
+		return Random.Range(0, attack) + _army.armyBonus;
 	}
 	
 	public bool TakeDamage(int damage) {
-		if (damage > defense) {
+		if (damage > (defense + _army.armyBonus)) {
 			currentState = unitState.dead;
 			Destroy(gameObject);
 			_army.UnitDied(this);

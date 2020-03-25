@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2556782367435074430}
   - component: {fileID: 2556782367435074417}
-  - component: {fileID: 2556782367435074431}
+  - component: {fileID: 5618557026014022287}
   m_Layer: 0
   m_Name: prefab_Warrior
   m_TagString: Unit
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2556782367435074431
+--- !u!114 &5618557026014022287
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,8 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad1ec109099f5e74cb6dcef20f35f409, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  land: {fileID: 0}
-  moveRange: 3
+  moveRange: 4
   minAtkRange: 1
   maxAtkRange: 1
   atkSplash: 0

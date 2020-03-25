@@ -91,7 +91,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4920221110158147963}
   - component: {fileID: 4920221110158147956}
-  - component: {fileID: 4920221110158147962}
+  - component: {fileID: 4420508786855718732}
   m_Layer: 0
   m_Name: prefab_Archer
   m_TagString: Unit
@@ -164,7 +164,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4920221110158147962
+--- !u!114 &4420508786855718732
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

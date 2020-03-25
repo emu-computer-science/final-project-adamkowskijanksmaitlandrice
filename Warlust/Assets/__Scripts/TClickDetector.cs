@@ -29,7 +29,7 @@ public class TClickDetector : MonoBehaviour
                 if (unit.transform.position == pos && 
                     unit.GetComponent<Unit>().army == TMapController.M.currentTurn)
                 {
-                    print("unit detected");
+                    //print("unit detected");
                     unit.GetComponent<Unit>().clicked();
                     return;
                 }
