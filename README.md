@@ -1,2 +1,3 @@
-# 2019HexMap
-I’ve imported sprites, created a hex palette for them all and saved them as tile assets. Then under GameObjcect, 2D, Hexagonal Point Top Tilemap. I did multiple hex maps for water, land, and obstacles. The land and water are 0 in the sorting order, the obstacles are 5 so they are visible over the other two. You are able paint the scene with the tiles created in the hex palette. Then I added the sprites for the warrior, archer, and wizard by drag and drop from sprites folder to hierarchy. I set their layering order to 7 so they appear above everything. This looks like a nice approach as it will make it easy to create many different kinds of maps to try and it’s really organized and intuitive. This tilemap feature is only available in 2019. I’m running 2019.3.6. Check it out and let me know what you guys think.
+# final-project-adamkowskijanksmaitlandrice
+final-project-adamkowskijanksmaitlandrice created by GitHub Classroom
+

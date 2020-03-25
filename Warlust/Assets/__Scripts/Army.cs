@@ -5,6 +5,7 @@ using UnityEngine;
 public class Army : MonoBehaviour {
 	[Header("Set Dynamically")]
 	public List<Unit> troops;
+	public moraleState currentMorale;
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +20,20 @@ public class Army : MonoBehaviour {
     }
 
 	//This is just a temprorary function until we implement the morale system
-	public void SetMorale() {}
+	public void SetMorale(moraleState newMorale) {
+		if (currentMorale != newMorale) {
+			if (newMorale == moraleState.high) {
+				//give a bonus for being high
+			} else if (newMorale == moraleState.low) {
+				//give a penalty for being low
+			} else if (currentMorale == moraleState.high) {
+				//take away high morale bonus
+			} else {
+				//take away low morale penalty
+			}
+			currentMorale = newMorale;
+		}
+	}
 
 	public void BeginTurn() {
 		foreach (Unit u in troops) {

@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad1ec109099f5e74cb6dcef20f35f409, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveRange: 10
+  moveRange: 1
   minAtkRange: 1
   maxAtkRange: 3
   atkSplash: 1

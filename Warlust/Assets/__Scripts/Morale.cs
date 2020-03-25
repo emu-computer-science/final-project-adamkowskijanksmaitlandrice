@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum moraleState {
+	neutral,
+	low,
+	high
+}
+
 public class Morale : MonoBehaviour {
 	[Header("Set in Inspector")]
 	public Slider attackerBarGUI, defenderBarGUI;
@@ -33,17 +39,41 @@ public class Morale : MonoBehaviour {
 				moraleGained *= 2;
 			}
 			attackerMorale += moraleGained;
-			if (attackerMorale > highMorale)
-				attacker.SetMorale();
+
+			if (attackerMorale >= 10) {
+				TMapController.M.ArmyLost(defender);
+			} else if (attackerMorale >= highMorale) {
+				attacker.SetMorale(moraleState.high);
+			} else if (attackerMorale > lowMorale) {
+				attacker.SetMorale(moraleState.high);
+			}
+
 			defenderMorale -= moraleGained;
+			if (defenderMorale <= lowMorale) {
+				defender.SetMorale(moraleState.low);
+			} else if (defenderMorale < highMorale) {
+				defender.SetMorale(moraleState.neutral);
+			}
 		} else {
 			if (defenderMorale <= lowMorale) {
 				moraleGained *= 2;
 			}
 			defenderMorale += moraleGained;
-			if (attackerMorale > highMorale)
-				defender.SetMorale();
+
+			if (defenderMorale >= 10) {
+				TMapController.M.ArmyLost(attacker);
+			} else if (defenderMorale >= highMorale) {
+				defender.SetMorale(moraleState.high);
+			} else if (defenderMorale > lowMorale) {
+				defender.SetMorale(moraleState.high);
+			}
+
 			attackerMorale -= moraleGained;
+			if (attackerMorale <= lowMorale) {
+				attacker.SetMorale(moraleState.low);
+			} else if (attackerMorale < highMorale) {
+				attacker.SetMorale(moraleState.neutral);
+			}
 		}
 	}
 }
