@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public enum squadState {
-	idle,
-	moved
-}
-
 public class Squad : Unit
 {
 	[Header("Set in Inspector")]
@@ -16,7 +11,7 @@ public class Squad : Unit
     [Header("Set Dynamically")]
     public Tilemap land;
     public Vector3Int currentPlayerTile;
-	public squadState currentState;
+	public List<Unit> troops;
 
 	private Army _army;
 
@@ -30,8 +25,6 @@ public class Squad : Unit
             }
         currentPlayerTile = land.WorldToCell(transform.position);
         transform.position = land.CellToWorld(currentPlayerTile);
-
-		currentState = squadState.idle;
     }
 
     // Update is called once per frame
@@ -56,40 +49,10 @@ public class Squad : Unit
         currentPlayerTile.x = v.x;
         currentPlayerTile.y = v.y;
         transform.position = land.CellToWorld(currentPlayerTile);
-		currentState = squadState.moved;
     }
 
     public void clicked()
     {
-		switch (currentState) {
-			case squadState.idle:
-			TMapController.M.startMove(gameObject, currentPlayerTile, moveRange);
-			break;
-		}
+		TMapController.M.startMove(gameObject, currentPlayerTile, moveRange);
     }
-
-	/*
-	public int Attack() {
-		currentState = squadState.attacked;
-		return Random.Range(0, attack);
-	}
-	
-	public bool TakeDamage(int damage) {
-		if (damage > defense) {
-			currentState = unitState.dead;
-			Destroy(gameObject);
-			_army.UnitDied(this);
-			return true;
-		}
-		return false;
-	}
-	*/
-
-	public void StartTurn() {
-		currentState = squadState.idle;
-	}
-
-	public void EndTurn() {
-		currentState = squadState.moved;
-	}
 }

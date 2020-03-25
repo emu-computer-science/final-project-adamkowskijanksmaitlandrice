@@ -159,6 +159,20 @@ public class TMapController : MonoBehaviour
                 left, right, upLeft, upRight, downLeft, downRight})
             {
                 if (obstacles.HasTile(dir)) continue;
+                if (mode == 'M')
+                {
+                    bool blocked = false;
+                    foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
+                    {
+                        if (land.WorldToCell(unit.transform.position) == dir &&
+                            unit.GetComponent<Unit>().army != currentTurn)
+                        {
+                            blocked = true;
+                            break;
+                        }
+                    }
+                    if (blocked) continue;
+                }
 
                 if (land.HasTile(dir) && !withinRange.Contains(dir) && !excludeRange.Contains(dir))
                 {
