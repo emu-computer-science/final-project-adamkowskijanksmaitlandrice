@@ -97,11 +97,11 @@ public class Unit : MonoBehaviour
 
 	public int Attack() {
 		//currentState = unitState.attacked;
-		return Random.Range(0, attack);
+		return Random.Range(0, attack) + _army.armyBonus;
 	}
 	
 	public bool TakeDamage(int damage) {
-		if (damage > defense) {
+		if (damage > (defense + _army.armyBonus)) {
 			currentState = unitState.dead;
 			Destroy(gameObject);
 			_army.UnitDied(this);

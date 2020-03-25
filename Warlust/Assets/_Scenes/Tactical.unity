@@ -148,7 +148,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 52030497a4289934db24ef55c0260935, type: 3}
+  m_audioClip: {fileID: 8300000, guid: c0872fb7f7ccf21409cc2d6d52a01ec2, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -1183,6 +1183,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   troops: []
+  currentMorale: 0
+  armyBonus: 0
 --- !u!4 &956732882
 Transform:
   m_ObjectHideFlags: 0
@@ -1227,6 +1229,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   troops: []
+  currentMorale: 0
+  armyBonus: 0
 --- !u!4 &1133978562
 Transform:
   m_ObjectHideFlags: 0

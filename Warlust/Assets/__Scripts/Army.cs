@@ -6,11 +6,12 @@ public class Army : MonoBehaviour {
 	[Header("Set Dynamically")]
 	public List<Unit> troops;
 	public moraleState currentMorale;
+	public int armyBonus;
 
     // Start is called before the first frame update
-    void Start()
-    {
-
+    void Start() {
+		armyBonus = 0;
+		currentMorale = moraleState.neutral;
     }
 
     // Update is called once per frame
@@ -23,13 +24,13 @@ public class Army : MonoBehaviour {
 	public void SetMorale(moraleState newMorale) {
 		if (currentMorale != newMorale) {
 			if (newMorale == moraleState.high) {
-				//give a bonus for being high
-			} else if (newMorale == moraleState.low) {
-				//give a penalty for being low
-			} else if (currentMorale == moraleState.high) {
+				armyBonus += 1;
+			} else if (newMorale == moraleState.low || currentMorale == moraleState.high) {
+				armyBonus -= 1;
+			//} else if (currentMorale == moraleState.high) {
 				//take away high morale bonus
 			} else {
-				//take away low morale penalty
+				armyBonus += 1;
 			}
 			currentMorale = newMorale;
 		}
