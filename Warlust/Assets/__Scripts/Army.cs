@@ -36,6 +36,6 @@ public class Army : MonoBehaviour {
 	public void UnitDied(Unit deadUnit) {
 		troops.Remove(deadUnit);
 		if (troops.Count == 0)
-			MapController.M.ArmyLost(this);
+			TMapController.M.ArmyLost(this);
 	}
 }

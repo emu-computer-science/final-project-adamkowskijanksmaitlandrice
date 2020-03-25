@@ -95,14 +95,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad1ec109099f5e74cb6dcef20f35f409, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveRange: 1
+  moveRange: 10
   minAtkRange: 1
   maxAtkRange: 3
   atkSplash: 1
   defense: 2
+  attack: 0
   land: {fileID: 0}
   currentPlayerTile: {x: 0, y: 0, z: 0}
-  teamNo: 1
+  currentState: 0
 --- !u!1 &5737206567084798029
 GameObject:
   m_ObjectHideFlags: 0

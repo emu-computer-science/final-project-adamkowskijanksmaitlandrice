@@ -3,19 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class MapController : MonoBehaviour
+public class WMapController : MonoBehaviour
 {
-    public enum mapRound { moving, attacking }
-
     [Header("Set in Inspector")]
     public Tilemap land;
     public Tilemap obstacles;
     public Tilemap highlights;
     public TileBase moveHighlight;
-    public TileBase attackHighlight;
-    public GameObject archer;
-    public GameObject warrior;
-    public GameObject wizard;
+    public GameObject squadron;
     public GameObject attackerGameObject;
     public GameObject defenderGameObject;
 
@@ -25,10 +20,9 @@ public class MapController : MonoBehaviour
     public Army currentTurn;
 
     private GameObject moving;
-    public static MapController M;
+    public static WMapController M;
     private List<Vector3Int> withinRange;
     private List<Vector3Int> excludeRange;
-    public mapRound roundState;
 
     // Start is called before the first frame update
     void Start()
@@ -37,11 +31,9 @@ public class MapController : MonoBehaviour
         attacker = attackerGameObject.GetComponent<Army>();
         defender = defenderGameObject.GetComponent<Army>();
         currentTurn = attacker;
-        roundState = mapRound.moving;
 
-        makeUnit(archer, 'A', 1, -2);
-        makeUnit(warrior, 'A', -2, -1);
-        makeUnit(wizard, 'D', 2, 0);
+        makeUnit(squadron, 'A', 1, -2);
+        makeUnit(squadron, 'D', 7, 1);
 
 		attacker.BeginTurn();
 		defender.EndTurn();
@@ -57,7 +49,7 @@ public class MapController : MonoBehaviour
 				currentTurn = defender;
 				attacker.EndTurn();
 				defender.BeginTurn();
-			}else {
+			} else {
 				currentTurn = attacker;
 				attacker.BeginTurn();
 				defender.EndTurn();
@@ -91,6 +83,7 @@ public class MapController : MonoBehaviour
         excludeRange = new List<Vector3Int>();
     }
 
+    /*
     public void startMove(GameObject toMove, Vector3Int currentTile, int moveRange)
     {
         if (roundState != mapRound.moving)
@@ -245,7 +238,7 @@ public class MapController : MonoBehaviour
                                 break;
                             }
                         }
-				} else {*/
+				} else {
                 attackedUnit.TakeDamage(moving.GetComponent<Unit>().Attack());
 				//}
                 break;
@@ -261,4 +254,5 @@ public class MapController : MonoBehaviour
 			print("The attacker has defeated the defender!");
 		}
 	}
+*/
 }

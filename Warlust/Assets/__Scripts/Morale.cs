@@ -26,8 +26,8 @@ public class Morale : MonoBehaviour {
     }
 
 	public void ChangeMorale(Army a, int moraleGained) {
-		Army attacker = MapController.M.attacker;
-		Army defender = MapController.M.defender;
+		Army attacker = TMapController.M.attacker;
+		Army defender = TMapController.M.defender;
 		if (a == attacker) {
 			if (attackerMorale <= lowMorale) {
 				moraleGained *= 2;

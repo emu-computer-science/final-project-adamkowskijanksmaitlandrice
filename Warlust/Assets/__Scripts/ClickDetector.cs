@@ -27,13 +27,13 @@ public class ClickDetector : MonoBehaviour
             foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
             {
                 if (unit.transform.position == pos && 
-                    unit.GetComponent<Unit>().army == MapController.M.currentTurn)
+                    unit.GetComponent<Unit>().army == TMapController.M.currentTurn)
                 {
                     unit.GetComponent<Unit>().clicked();
                     return;
                 }
             }
-            MapController.M.endMove(cel);
+            TMapController.M.endMove(cel);
         }
     }
 
