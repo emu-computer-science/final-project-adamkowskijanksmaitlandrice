@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class Squad : Unit
+public class Squad : MonoBehaviour
 {
-	[Header("Set in Inspector")]
-	public int moveRange;
+    [Header("Set in Inspector")]
+    public int moveRange;
 
     [Header("Set Dynamically")]
     public Tilemap land;
     public Vector3Int currentPlayerTile;
-	public List<Unit> troops;
+    public List<Squad> troops;
 
-	private Army _army;
+	private Squad _sqArmy;
 
     void Start()
     {
@@ -32,16 +32,16 @@ public class Squad : Unit
     {
 
     }
-
-	public Army army {
+    
+	public Squad sqArmy {
 		set 
 		{
-			_army = value;
+            _sqArmy = value;
 			SpriteRenderer sr = GetComponent<SpriteRenderer>();
-			if (_army == TMapController.M.defender)
+			if (_sqArmy == WMapController.M.defender)
 				sr.color = Color.blue;
 		}
-		get { return _army; }
+		get { return _sqArmy; }
 	}
 
     public void SetPosition(Vector3Int v)
@@ -53,6 +53,6 @@ public class Squad : Unit
 
     public void clicked()
     {
-		TMapController.M.startMove(gameObject, currentPlayerTile, moveRange);
+		WMapController.M.startMove(gameObject, currentPlayerTile, moveRange);
     }
 }

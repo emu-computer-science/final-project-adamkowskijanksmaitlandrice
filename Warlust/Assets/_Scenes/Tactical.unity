@@ -1183,6 +1183,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   troops: []
+  currentMorale: 0
 --- !u!4 &956732882
 Transform:
   m_ObjectHideFlags: 0
@@ -1227,6 +1228,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   troops: []
+  currentMorale: 0
 --- !u!4 &1133978562
 Transform:
   m_ObjectHideFlags: 0
@@ -9125,9 +9127,9 @@ GameObject:
   - component: {fileID: 1940724236}
   - component: {fileID: 1940724235}
   - component: {fileID: 1940724234}
-  - component: {fileID: 1940724238}
   - component: {fileID: 1940724237}
   - component: {fileID: 1940724239}
+  - component: {fileID: 1940724238}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -9235,7 +9237,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1940724233}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7740cacc3efd5d34faabd01e5c15a6ae, type: 3}
+  m_Script: {fileID: 11500000, guid: 9448015052606184da68dacfeb697988, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   land: {fileID: 1718331745}

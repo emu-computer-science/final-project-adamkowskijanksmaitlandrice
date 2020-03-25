@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class ClickDetector : MonoBehaviour
+public class WClickDetector : MonoBehaviour
 {
     [Header("Set in Inspector")]
     public Tilemap land;
@@ -27,13 +27,13 @@ public class ClickDetector : MonoBehaviour
             foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
             {
                 if (unit.transform.position == pos && 
-                    unit.GetComponent<Unit>().army == TMapController.M.currentTurn)
+                    unit.GetComponent<Squad>().sqArmy == WMapController.M.currentTurn)
                 {
-                    unit.GetComponent<Unit>().clicked();
+                    unit.GetComponent<Squad>().clicked();
                     return;
                 }
             }
-            TMapController.M.endMove(cel);
+            WMapController.M.endMove(cel);
         }
     }
 

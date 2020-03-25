@@ -15,9 +15,9 @@ public class WMapController : MonoBehaviour
     public GameObject defenderGameObject;
 
     [Header("Set Dynamically")]
-    public Army attacker;
-    public Army defender;
-    public Army currentTurn;
+    public Squad attacker;
+    public Squad defender;
+    public Squad currentTurn;
 
     private GameObject moving;
     public static WMapController M;
@@ -28,12 +28,12 @@ public class WMapController : MonoBehaviour
     void Start()
     {
         M = this;
-        attacker = attackerGameObject.GetComponent<Army>();
-        defender = defenderGameObject.GetComponent<Army>();
+        attacker = attackerGameObject.GetComponent<Squad>();
+        defender = defenderGameObject.GetComponent<Squad>();
         currentTurn = attacker;
 
-        makeUnit(squadron, 'A', 1, -2);
-        makeUnit(squadron, 'D', 7, 1);
+        makeSquad(squadron, 'A', -1, 0);
+        makeSquad(squadron, 'D', 1, 0);
     }
 
     // Update is called once per frame
@@ -47,7 +47,7 @@ public class WMapController : MonoBehaviour
         }
     }
 
-    public void makeUnit(GameObject prefab, char team, int x, int y)
+    public void makeSquad(GameObject prefab, char team, int x, int y)
     {
         GameObject squad = Instantiate(prefab);
         Squad squadScript = squad.GetComponent<Squad>();
@@ -57,12 +57,12 @@ public class WMapController : MonoBehaviour
         if (team == 'A')
         {
             attacker.troops.Add(squadScript);
-            squadScript.army = attacker;
+            squadScript.sqArmy = attacker;
         }
         else
         {
             defender.troops.Add(squadScript);
-            squadScript.army = defender;
+            squadScript.sqArmy = defender;
         }
     }
 
@@ -72,12 +72,13 @@ public class WMapController : MonoBehaviour
         withinRange = new List<Vector3Int>();
         excludeRange = new List<Vector3Int>();
     }
-    /*
+
     public void startMove(GameObject toMove, Vector3Int currentTile, int moveRange)
     {
-        //print("About to start move");
+        print("About to start move");
         clearMove();
         moving = toMove;
+        excludeRange.Add(currentTile);
         List<Vector3Int> queue = new List<Vector3Int>() { currentTile };
         for (int i = 0; i < moveRange; i++)
             queue = updateQueue(queue);
@@ -103,26 +104,9 @@ public class WMapController : MonoBehaviour
             foreach (Vector3Int dir in new Vector3Int[] {
                 left, right, upLeft, upRight, downLeft, downRight})
             {
-                if (obstacles.HasTile(dir)) continue;
-
-                if (land.HasTile(dir) && !withinRange.Contains(dir) && !excludeRange.Contains(dir))
-                {
-                    bool OK = true;
-                    foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
-                    { 
-                        if (land.WorldToCell(unit.transform.position) == dir)
-                        {
-                            OK = false;
-                            break;
-                        }
-                    }
-                    if (OK)
-                    {
-                        if (include) withinRange.Add(dir);
-                        else excludeRange.Add(dir);
-                    }
-                    queue2.Add(dir);
-                }
+                if (obstacles.HasTile(dir) || !land.HasTile(dir)) continue;
+                if (!withinRange.Contains(dir) && !excludeRange.Contains(dir)) withinRange.Add(dir);
+                queue2.Add(dir);
             }
         }
         queue = queue2;
@@ -133,70 +117,70 @@ public class WMapController : MonoBehaviour
     {
         if (moving == null)
         {
-            print("moving == null | "+ currentTurn +" | "+ roundState);
+            //print("moving == null | "+ currentTurn +" | "+ roundState);
             return;
         }
 
-        switch (moving.GetComponent<Unit>().currentState) 
-        {
-            case unitState.idle:
-                foreach (Vector3Int v in withinRange)
-                    if (destTile == v)
-                    {
-                        moving.GetComponent<Unit>().SetPosition(v);
-                        moving.GetComponent<Unit>().currentState = unitState.moved;
-                        roundState = mapRound.attacking;
-                        break;
-                    }
-                break;
-            case unitState.moved:
-                foreach (Vector3Int v in withinRange)
-                    if (destTile == v)
-                        //foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
-                            //if (land.WorldToCell(unit.transform.position) == v)
-                            {
-                                //print(unit.GetComponent<Unit>().TakeDamage(moving.GetComponent<Unit>().Attack()));
-                                moving.GetComponent<Unit>().currentState = unitState.idle;
-                                roundState = mapRound.moving;
-                                if (currentTurn == attacker) currentTurn = defender;
-                                else currentTurn = attacker;
-                                moving = null;
-                                break;
-                            }
-                break;
-        }
-        clearMove();
-    }
-
-	public void UnitAttacked(Unit attackedUnit, Vector3 destTile) {
-		foreach (Vector3Int v in withinRange)
+        foreach (Vector3Int v in withinRange)
         {
             if (destTile == v)
             {
-				/*if (moving.GetComponent<Unit>().currentState == unitState.moved) {
-					foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
-                        {
-                            if (land.WorldToCell(unit.transform.position) == v)
-                            {
-                                print(unit.GetComponent<Unit>().TakeDamage(moving.GetComponent<Unit>().Attack()));
-                                break;
-                            }
-                        }
-				} else {
-                attackedUnit.TakeDamage(moving.GetComponent<Unit>().Attack());
-				//}
+                foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
+                {
+                    if (land.WorldToCell(unit.transform.position) == v &&
+                        unit.GetComponent<Squad>().sqArmy != currentTurn)
+                    {
+                        print("Attack!");
+                        // do the actual stuff here...
+                        break;
+                    }
+                }
+                moving.GetComponent<Squad>().SetPosition(v);
+                if (currentTurn == attacker) currentTurn = defender;
+                else currentTurn = attacker;
+                moving = null;
                 break;
             }
         }
         clearMove();
-	}
+    }
 
-	public void ArmyLost(Army loser) {
-		if (loser == attacker) {
+    public void UnitAttacked(Unit attackedUnit, Vector3 destTile)
+    {
+        foreach (Vector3Int v in withinRange)
+        {
+            if (destTile == v)
+            {
+                if (moving.GetComponent<Unit>().currentState == unitState.moved)
+                {
+                    foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
+                    {
+                        if (land.WorldToCell(unit.transform.position) == v)
+                        {
+                            print(unit.GetComponent<Unit>().TakeDamage(moving.GetComponent<Unit>().Attack()));
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    attackedUnit.TakeDamage(moving.GetComponent<Unit>().Attack());
+                    //}
+                    break;
+                }
+                clearMove();
+            }
+        }
+    }
+
+	public void ArmyLost(Army loser) 
+    {
+		if (loser == attacker) 
+        {
 			print("The attacker was defeated.\nThe defender has won!");
-		} else {
+		} 
+            else {
 			print("The attacker has defeated the defender!");
 		}
 	}
-*/
 }
