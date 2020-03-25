@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5737206566106309400}
   - component: {fileID: 5737206566106309407}
-  - component: {fileID: 5737206566106309401}
+  - component: {fileID: 1012696754557078435}
   m_Layer: 0
   m_Name: prefab_Wizard
   m_TagString: Unit
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5737206566106309401
+--- !u!114 &1012696754557078435
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -100,9 +100,10 @@ MonoBehaviour:
   maxAtkRange: 3
   atkSplash: 1
   defense: 2
+  attack: 5
   land: {fileID: 0}
   currentPlayerTile: {x: 0, y: 0, z: 0}
-  teamNo: 1
+  currentState: 0
 --- !u!1 &5737206567084798029
 GameObject:
   m_ObjectHideFlags: 0

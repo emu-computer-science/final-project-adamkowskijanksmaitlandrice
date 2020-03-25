@@ -52,6 +52,7 @@ public class MapController : MonoBehaviour
     {
 		if (Input.GetKeyDown("space")) {
 			clearMove();
+			roundState = mapRound.moving;
 			print("End of current turn");
 			if (currentTurn == attacker) {
 				currentTurn = defender;

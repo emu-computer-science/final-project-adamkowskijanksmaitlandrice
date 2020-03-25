@@ -31,7 +31,13 @@ public class Morale : MonoBehaviour {
 		defenderBarGUI.value = defenderMorale;
     }
 
-	public void ChangeMorale(Army a, int moraleGained) {
+
+	public void MoraleLost(Army a, int moraleLost) {
+		if (a == MapController.M.attacker) MoraleGained(MapController.M.defender, moraleLost);
+		else MoraleGained(MapController.M.attacker, moraleLost);
+	}
+
+	public void MoraleGained(Army a, int moraleGained) {
 		Army attacker = MapController.M.attacker;
 		Army defender = MapController.M.defender;
 		if (a == attacker) {

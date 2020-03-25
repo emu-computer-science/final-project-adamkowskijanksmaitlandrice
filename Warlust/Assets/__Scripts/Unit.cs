@@ -18,7 +18,7 @@ public class Unit : MonoBehaviour
 	public int maxAtkRange;
 	public int atkSplash;
 	public int defense;
-	public int attack; //How much damage the unit deals
+	public int attack = 5; //How much damage the unit deals
 
     [Header("Set Dynamically")]
     public Tilemap land;
@@ -26,6 +26,7 @@ public class Unit : MonoBehaviour
 	public unitState currentState;
 
 	private Army _army;
+	private int _morale = 1;
 
     void Start()
     {
@@ -64,6 +65,10 @@ public class Unit : MonoBehaviour
 		get {
 			return _army;
 		}
+	}
+
+	public int morale {
+		get {return _morale;}
 	}
 
     public void SetPosition(Vector3Int v)

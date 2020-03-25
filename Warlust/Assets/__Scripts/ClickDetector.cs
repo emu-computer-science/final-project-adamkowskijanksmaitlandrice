@@ -26,9 +26,9 @@ public class ClickDetector : MonoBehaviour
             pos = land.CellToWorld(cel);
             foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
             {
-                if (unit.transform.position == pos && 
-                    unit.GetComponent<Unit>().army == MapController.M.currentTurn)
-                {
+                /*if (unit.transform.position == pos && 
+                    unit.GetComponent<Unit>().army == MapController.M.currentTurn)*/
+                if (unit.transform.position == pos) {
                     unit.GetComponent<Unit>().clicked();
                     return;
                 }

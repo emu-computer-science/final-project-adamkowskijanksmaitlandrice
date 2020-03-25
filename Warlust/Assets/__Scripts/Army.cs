@@ -51,5 +51,6 @@ public class Army : MonoBehaviour {
 		troops.Remove(deadUnit);
 		if (troops.Count == 0)
 			MapController.M.ArmyLost(this);
+		else Morale.M.MoraleLost(this, deadUnit.morale);
 	}
 }
