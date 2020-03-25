@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.SceneManagement;
 
 public class TMapController : MonoBehaviour
 {
@@ -267,5 +268,6 @@ public class TMapController : MonoBehaviour
 		} else {
 			print("The attacker has defeated the defender!");
 		}
+		SceneManager.LoadScene("World", LoadSceneMode.Single);
 	}
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.SceneManagement;
 
 public class WMapController : MonoBehaviour
 {
@@ -132,6 +133,7 @@ public class WMapController : MonoBehaviour
                     {
                         print("Attack!");
                         // do the actual stuff here...
+						SceneManager.LoadScene("Tactical", LoadSceneMode.Single);
                         break;
                     }
                 }
