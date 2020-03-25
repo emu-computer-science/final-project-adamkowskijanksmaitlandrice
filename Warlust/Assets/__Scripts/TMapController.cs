@@ -240,18 +240,7 @@ public class TMapController : MonoBehaviour
         {
             if (destTile == v)
             {
-				/*if (moving.GetComponent<Unit>().currentState == unitState.moved) {
-					foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
-                        {
-                            if (land.WorldToCell(unit.transform.position) == v)
-                            {
-                                print(unit.GetComponent<Unit>().TakeDamage(moving.GetComponent<Unit>().Attack()));
-                                break;
-                            }
-                        }
-				} else {*/
                 attackedUnit.TakeDamage(moving.GetComponent<Unit>().Attack());
-				//}
                 break;
             }
         }

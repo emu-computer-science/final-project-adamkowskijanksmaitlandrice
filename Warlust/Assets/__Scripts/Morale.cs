@@ -32,13 +32,13 @@ public class Morale : MonoBehaviour {
     }
 
 	public void MoraleLost(Army a, int moraleLost) {
-		if (a == MapController.M.attacker) MoraleGained(MapController.M.defender, moraleLost);
+		if (a == TMapController.M.attacker) MoraleGained(TMapController.M.defender, moraleLost);
 		else MoraleGained(MapController.M.attacker, moraleLost);
 	}
 
 	public void MoraleGained(Army a, int moraleGained) {
-		Army attacker = MapController.M.attacker;
-		Army defender = MapController.M.defender;
+		Army attacker = TMapController.M.attacker;
+		Army defender = TMapController.M.defender;
 
 		if (a == attacker) {
 			if (attackerMorale <= lowMorale) {
