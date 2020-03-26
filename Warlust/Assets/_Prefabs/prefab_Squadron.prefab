@@ -96,14 +96,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveRange: 2
-  minAtkRange: 0
-  maxAtkRange: 0
-  atkSplash: 0
-  defense: 0
-  attack: 0
   land: {fileID: 0}
   currentPlayerTile: {x: 0, y: 0, z: 0}
-  currentState: 0
   troops: []
 --- !u!1 &6650108170863441970
 GameObject:

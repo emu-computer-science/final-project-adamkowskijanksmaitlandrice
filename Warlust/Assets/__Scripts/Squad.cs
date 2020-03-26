@@ -11,9 +11,9 @@ public class Squad : MonoBehaviour
     [Header("Set Dynamically")]
     public Tilemap land;
     public Vector3Int currentPlayerTile;
-    public List<Squad> troops;
+    public List<Unit> troops;
 
-	private Squad _sqArmy;
+	private Kingdom _sqArmy;
 
     void Start()
     {
@@ -33,12 +33,12 @@ public class Squad : MonoBehaviour
 
     }
     
-	public Squad sqArmy {
+	public Kingdom sqArmy {
 		set 
 		{
             _sqArmy = value;
 			SpriteRenderer sr = GetComponent<SpriteRenderer>();
-			if (_sqArmy == WMapController.M.defender)
+			if (_sqArmy == WMapController.M.blue)
 				sr.color = Color.blue;
 		}
 		get { return _sqArmy; }

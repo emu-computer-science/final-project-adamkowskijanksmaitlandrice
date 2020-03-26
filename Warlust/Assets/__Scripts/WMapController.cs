@@ -12,13 +12,16 @@ public class WMapController : MonoBehaviour
     public Tilemap highlights;
     public TileBase moveHighlight;
     public GameObject squadron;
-    public GameObject attackerGameObject;
-    public GameObject defenderGameObject;
+    public GameObject redGameObject;
+    public GameObject blueGameObject;
+    public Unit archer;
+    public Unit warrior;
+    public Unit wizard;
 
     [Header("Set Dynamically")]
-    public Squad attacker;
-    public Squad defender;
-    public Squad currentTurn;
+    public Kingdom red;
+    public Kingdom blue;
+    public Kingdom currentTurn;
 
     private GameObject moving;
     public static WMapController M;
@@ -29,12 +32,13 @@ public class WMapController : MonoBehaviour
     void Start()
     {
         M = this;
-        attacker = attackerGameObject.GetComponent<Squad>();
-        defender = defenderGameObject.GetComponent<Squad>();
-        currentTurn = attacker;
+        red = redGameObject.GetComponent<Kingdom>();
+        blue = blueGameObject.GetComponent<Kingdom>();
+        currentTurn = red;
 
-        makeSquad(squadron, 'A', -1, 0);
-        makeSquad(squadron, 'D', 1, 0);
+        List<Unit> standard = new List<Unit>() { archer, warrior, wizard };
+        makeSquad(squadron, standard, 'O', -1, 0);
+        makeSquad(squadron, standard, 'G', 1, 0);
     }
 
     // Update is called once per frame
@@ -43,27 +47,28 @@ public class WMapController : MonoBehaviour
 		if (Input.GetKeyDown("space")) {
 			clearMove();
 			print("End of current turn");
-			if (currentTurn == attacker) currentTurn = defender;
-			else  currentTurn = attacker;
+			if (currentTurn == red) currentTurn = blue;
+			else  currentTurn = red;
         }
     }
 
-    public void makeSquad(GameObject prefab, char team, int x, int y)
+    public void makeSquad(GameObject prefab, List<Unit> units, char team, int x, int y)
     {
         GameObject squad = Instantiate(prefab);
         Squad squadScript = squad.GetComponent<Squad>();
+        squadScript.troops = units;
         Vector3Int v3i = new Vector3Int(x, y, 0);
         squadScript.currentPlayerTile = v3i;
         squad.transform.position = land.CellToWorld(squadScript.currentPlayerTile);
-        if (team == 'A')
+        if (team == 'O')
         {
-            attacker.troops.Add(squadScript);
-            squadScript.sqArmy = attacker;
+            red.squadrons.Add(squadScript);
+            squadScript.sqArmy = red;
         }
         else
         {
-            defender.troops.Add(squadScript);
-            squadScript.sqArmy = defender;
+            blue.squadrons.Add(squadScript);
+            squadScript.sqArmy = blue;
         }
     }
 
@@ -138,8 +143,8 @@ public class WMapController : MonoBehaviour
                     }
                 }
                 moving.GetComponent<Squad>().SetPosition(v);
-                if (currentTurn == attacker) currentTurn = defender;
-                else currentTurn = attacker;
+                if (currentTurn == red) currentTurn = blue;
+                else currentTurn = red;
                 moving = null;
                 break;
             }
