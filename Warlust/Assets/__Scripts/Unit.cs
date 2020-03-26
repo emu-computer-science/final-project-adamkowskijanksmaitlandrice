@@ -75,7 +75,9 @@ public class Unit : MonoBehaviour
     {
 		switch (currentState) {
 			case unitState.idle:
-			if (TMapController.M.currentTurn == _army)
+			if (TMapController.M.moving == gameObject)
+				endMove(currentPlayerTile);
+			else if (TMapController.M.currentTurn == _army)
 				startMove(gameObject, currentPlayerTile, moveRange);
 			//else TMapController.M.UnitAttacked(this, currentPlayerTile);
 			break;
@@ -108,6 +110,7 @@ public class Unit : MonoBehaviour
         //print("About to start move");
         clearMove();
         TMapController.M.moving = toMove;
+		withinRange.Add(currentTile);
         List<Vector3Int> queue = new List<Vector3Int>() { currentTile };
         for (int i = 0; i < moveRange; i++)
             queue = updateQueue(queue, 'M', true);
