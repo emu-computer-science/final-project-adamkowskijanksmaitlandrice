@@ -79,9 +79,9 @@ public class Unit : MonoBehaviour
 				startMove(gameObject, currentPlayerTile, moveRange);
 			//else TMapController.M.UnitAttacked(this, currentPlayerTile);
 			break;
-			case unitState.moved:
-			startAttack(gameObject, currentPlayerTile, minAtkRange, maxAtkRange);
-			break;
+			//case unitState.moved:
+			//startAttack(gameObject, currentPlayerTile, minAtkRange, maxAtkRange);
+			//break;
 		}
     }
 
@@ -230,6 +230,8 @@ public class Unit : MonoBehaviour
                         TMapController.M.moving.GetComponent<Unit>().SetPosition(v);
                         TMapController.M.moving.GetComponent<Unit>().currentState = unitState.moved;
                         TMapController.M.roundState = TMapController.mapRound.attacking;
+						clearMove();
+						TMapController.M.moving.GetComponent<Unit>().startAttack(gameObject, currentPlayerTile, minAtkRange, maxAtkRange);
                         break;
                     }
                 break;
@@ -248,11 +250,11 @@ public class Unit : MonoBehaviour
                                     TMapController.M.currentTurn = TMapController.M.defender;
                                 else TMapController.M.currentTurn = TMapController.M.attacker;
                                 TMapController.M.moving = null;
+								clearMove();
                                 break;
                             }
                 break;
         }
-        clearMove();
     }
 
     private int Attack() {
