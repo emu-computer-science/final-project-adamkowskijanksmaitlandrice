@@ -21,8 +21,8 @@ public class TMapController : MonoBehaviour
     public GameObject defenderGameObject;
 
     [Header("Set Dynamically")]
-    public Army attacker;
-    public Army defender;
+    public static Army attacker;
+    public static Army defender;
     public Army currentTurn;
     public GameObject moving;
     public mapRound roundState;
