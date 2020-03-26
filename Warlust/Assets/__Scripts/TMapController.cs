@@ -24,12 +24,10 @@ public class TMapController : MonoBehaviour
     public Army attacker;
     public Army defender;
     public Army currentTurn;
-
-    private GameObject moving;
-    public static TMapController M;
-    private List<Vector3Int> withinRange;
-    private List<Vector3Int> excludeRange;
+    public GameObject moving;
     public mapRound roundState;
+
+    public static TMapController M;
 
     // Start is called before the first frame update
     void Start()
@@ -52,7 +50,7 @@ public class TMapController : MonoBehaviour
     void Update()
     {
 		if (Input.GetKeyDown("space")) {
-			clearMove();
+            highlights.ClearAllTiles();
             roundState = mapRound.moving;
             moving = null;
 			print("End of current turn");
@@ -87,169 +85,12 @@ public class TMapController : MonoBehaviour
         }
     }
 
-    public void clearMove()
+    public void endMove(Vector3Int cel)
     {
-        highlights.ClearAllTiles();
-        withinRange = new List<Vector3Int>();
-        excludeRange = new List<Vector3Int>();
+        moving.GetComponent<Unit>().endMove(cel);
     }
 
-    public void startMove(GameObject toMove, Vector3Int currentTile, int moveRange)
-    {
-        if (roundState != mapRound.moving)
-        {
-            //print("roundState != mapRound.moving");
-            return;
-        }
-        if (toMove.GetComponent<Unit>().currentState != unitState.idle)
-        {
-            //print("toMove.GetComponent<Unit>().currentState != unitState.idle");
-            return;
-        }
-
-        //print("About to start move");
-        clearMove();
-        moving = toMove;
-        List<Vector3Int> queue = new List<Vector3Int>() { currentTile };
-        for (int i = 0; i < moveRange; i++)
-            queue = updateQueue(queue, 'M', true);
-        foreach (Vector3Int v in withinRange)
-            highlights.SetTile(v, moveHighlight);
-    }
-
-	public void StartAttack(GameObject toAttack, Vector3Int currentTile, int minAtkRange, int maxAtkRange)
-    {
-        if (roundState != mapRound.attacking)
-        {
-            //print("roundState != mapRound.attacking");
-            return;
-        }
-        if (toAttack.GetComponent<Unit>().currentState != unitState.moved)
-        {
-            //print("toAttack.GetComponent<Unit>().currentState != unitState.moved");
-            return;
-        }
-
-        print("About to start attack");
-        clearMove();
-        List<Vector3Int> queue = new List<Vector3Int>() { currentTile };
-        for (int i = 0; i < minAtkRange - 1; i++)
-            queue = updateQueue(queue, 'A', false);
-        for (int i = 0; i < maxAtkRange - minAtkRange + 1; i++)
-            queue = updateQueue(queue, 'A', true);
-        foreach (Vector3Int v in withinRange)
-            highlights.SetTile(v, attackHighlight);
-    }
-
-    public List<Vector3Int> updateQueue(List<Vector3Int> queue, char mode, bool include)
-    {
-        List<Vector3Int> queue2 = new List<Vector3Int>();
-        while (queue.Count > 0)
-        {
-            Vector3Int check = queue[0];
-            int x = check.x, y = check.y, z = check.z;
-            queue.Remove(check);
-            int row = Mathf.Abs(check.y % 2);
-            Vector3Int left = new Vector3Int(x-1, y, z);
-            Vector3Int right = new Vector3Int(x+1, y, z);
-            Vector3Int upLeft = new Vector3Int(x-1+row, y+1, z);
-            Vector3Int upRight = new Vector3Int(x+row, y+1, z);
-            Vector3Int downLeft = new Vector3Int(x-1+row, y-1, z);
-            Vector3Int downRight = new Vector3Int(x+row, y-1, z);
-            foreach (Vector3Int dir in new Vector3Int[] {
-                left, right, upLeft, upRight, downLeft, downRight})
-            {
-                if (obstacles.HasTile(dir)) continue;
-                if (mode == 'M')
-                {
-                    bool blocked = false;
-                    foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
-                    {
-                        if (land.WorldToCell(unit.transform.position) == dir &&
-                            unit.GetComponent<Unit>().army != currentTurn)
-                        {
-                            blocked = true;
-                            break;
-                        }
-                    }
-                    if (blocked) continue;
-                }
-
-                if (land.HasTile(dir) && !withinRange.Contains(dir) && !excludeRange.Contains(dir))
-                {
-                    bool OK = true;
-                    foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
-                    { 
-                        if (mode == 'M')
-                        {
-                            if (land.WorldToCell(unit.transform.position) == dir)
-                            {
-                                OK = false;
-                                break;
-                            }
-                        }
-                        else
-                                if (land.WorldToCell(unit.transform.position) == dir &&
-                                    unit.GetComponent<Unit>().army == currentTurn)
-                        {
-                            OK = false;
-                            break;
-                        }
-                    }
-                    if (OK)
-                    {
-                        if (include) withinRange.Add(dir);
-                        else excludeRange.Add(dir);
-                    }
-                    queue2.Add(dir);
-                }
-            }
-        }
-        queue = queue2;
-        return queue;
-    }
-
-    public void endMove(Vector3 destTile)
-    {
-        if (moving == null)
-        {
-            //print("moving == null | "+ currentTurn +" | "+ roundState);
-            return;
-        }
-
-        switch (moving.GetComponent<Unit>().currentState) 
-        {
-            case unitState.idle:
-                foreach (Vector3Int v in withinRange)
-                    if (destTile == v)
-                    {
-                        moving.GetComponent<Unit>().SetPosition(v);
-                        moving.GetComponent<Unit>().currentState = unitState.moved;
-                        roundState = mapRound.attacking;
-                        break;
-                    }
-                break;
-            case unitState.moved:
-                foreach (Vector3Int v in withinRange)
-                    if (destTile == v)
-                        foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
-                            if (land.WorldToCell(unit.transform.position) == v)
-                            {
-                                int dmg = moving.GetComponent<Unit>().Attack();
-                                print("damage: " + dmg);
-                                print("killed: "+ unit.GetComponent<Unit>().TakeDamage(dmg));
-                                moving.GetComponent<Unit>().currentState = unitState.idle;
-                                roundState = mapRound.moving;
-                                if (currentTurn == attacker) currentTurn = defender;
-                                else currentTurn = attacker;
-                                moving = null;
-                                break;
-                            }
-                break;
-        }
-        clearMove();
-    }
-
+    /*
 	public void UnitAttacked(Unit attackedUnit, Vector3 destTile) {
 		foreach (Vector3Int v in withinRange)
         {
@@ -261,6 +102,7 @@ public class TMapController : MonoBehaviour
         }
         clearMove();
 	}
+    */
 
 	public void ArmyLost(Army loser) {
 		if (loser == attacker) {
