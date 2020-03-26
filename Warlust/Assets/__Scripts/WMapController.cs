@@ -146,43 +146,4 @@ public class WMapController : MonoBehaviour
         }
         clearMove();
     }
-
-    public void UnitAttacked(Unit attackedUnit, Vector3 destTile)
-    {
-        foreach (Vector3Int v in withinRange)
-        {
-            if (destTile == v)
-            {
-                if (moving.GetComponent<Unit>().currentState == unitState.moved)
-                {
-                    foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
-                    {
-                        if (land.WorldToCell(unit.transform.position) == v)
-                        {
-                            print(unit.GetComponent<Unit>().TakeDamage(moving.GetComponent<Unit>().Attack()));
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    attackedUnit.TakeDamage(moving.GetComponent<Unit>().Attack());
-                    //}
-                    break;
-                }
-                clearMove();
-            }
-        }
-    }
-
-	public void ArmyLost(Army loser) 
-    {
-		if (loser == attacker) 
-        {
-			print("The attacker was defeated.\nThe defender has won!");
-		} 
-            else {
-			print("The attacker has defeated the defender!");
-		}
-	}
 }

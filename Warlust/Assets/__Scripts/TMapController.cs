@@ -268,6 +268,7 @@ public class TMapController : MonoBehaviour
 		} else {
 			print("The attacker has defeated the defender!");
 		}
-		SceneManager.LoadScene("World", LoadSceneMode.Single);
+		SceneManager.LoadScene("TacticalResultsScene", LoadSceneMode.Additive);
+		SceneManager.MoveGameObjectToScene(GameObject.FindWithTag("AudioSource"), SceneManager.GetSceneByName("TacticalResultsScene"));
 	}
 }
