@@ -7,7 +7,7 @@ public enum unitState {
 	idle,
 	moved,
 	//attacked,
-	//dead
+	dead
 }
 
 public class Unit : MonoBehaviour
@@ -21,6 +21,7 @@ public class Unit : MonoBehaviour
 	public int defense;
 	public int attack = 5; //How much damage the unit deals
 	public int morale = 1;
+	public Sprite skullSprite;
 
     [Header("Set Dynamically")]
     public Vector3Int currentPlayerTile;
@@ -171,7 +172,7 @@ public class Unit : MonoBehaviour
                     foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
                     {
                         if (TMapController.M.land.WorldToCell(unit.transform.position) == dir &&
-                            unit.GetComponent<Unit>().army != TMapController.M.currentTurn)
+                            unit.GetComponent<Unit>().army != TMapController.M.currentTurn && unit.GetComponent<Unit>().currentState != unitState.dead)
                         {
                             blocked = true;
                             break;
@@ -266,8 +267,9 @@ public class Unit : MonoBehaviour
     
     private bool TakeDamage(int damage) {
 		if (damage > (defense + _army.armyBonus)) {
-			//currentState = unitState.dead;
-			Destroy(gameObject);
+			currentState = unitState.dead;
+			//Destroy(gameObject);
+			 gameObject.GetComponent<SpriteRenderer>().sprite = skullSprite;
 			_army.UnitDied(this);
 			return true;
 		}

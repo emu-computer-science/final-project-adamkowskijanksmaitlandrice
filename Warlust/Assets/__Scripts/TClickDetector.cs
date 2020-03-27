@@ -24,7 +24,7 @@ public class TClickDetector : MonoBehaviour
             pos = Camera.main.ScreenToWorldPoint(pos);
             Vector3Int cel = land.WorldToCell(pos);
             pos = land.CellToWorld(cel);
-            foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
+            /*foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
             {
                 if (unit.transform.position == pos && 
                     unit.GetComponent<Unit>().army == TMapController.M.currentTurn)
@@ -33,7 +33,13 @@ public class TClickDetector : MonoBehaviour
                     unit.GetComponent<Unit>().clicked();
                     return;
                 }
-            }
+            }*/
+			foreach (Unit unit in TMapController.M.currentTurn.troops) {
+				if (unit.gameObject.transform.position == pos) {
+					unit.clicked();
+					return;
+				}
+			}
             TMapController.M.endMove(cel);
         }
     }

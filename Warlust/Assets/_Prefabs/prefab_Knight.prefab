@@ -184,5 +184,6 @@ MonoBehaviour:
   defense: 4
   attack: 6
   morale: 3
+  skullSprite: {fileID: 21300000, guid: 74e9ed9d213da214c83a1135667d4fdc, type: 3}
   currentPlayerTile: {x: 0, y: 0, z: 0}
   currentState: 0
