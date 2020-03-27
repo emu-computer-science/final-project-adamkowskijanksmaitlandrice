@@ -17,6 +17,7 @@ public class TMapController : MonoBehaviour
     public GameObject archer;
     public GameObject warrior;
     public GameObject wizard;
+	public GameObject knight;
     public GameObject attackerGameObject;
     public GameObject defenderGameObject;
 
@@ -41,6 +42,7 @@ public class TMapController : MonoBehaviour
         makeUnit(archer, 'A', 1, -2);
         makeUnit(warrior, 'A', -2, -1);
         makeUnit(wizard, 'D', 7, 1);
+		makeUnit(knight, 'D', 5, 1);
 
 		attacker.BeginTurn();
 		defender.EndTurn();

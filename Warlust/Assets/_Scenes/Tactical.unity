@@ -9215,6 +9215,7 @@ MonoBehaviour:
   archer: {fileID: 4920221110158147957, guid: 7b7872ec1dfd21d46928989939c66848, type: 3}
   warrior: {fileID: 2556782367435074416, guid: 766f5d2c8371eae4c881cbc6b288ba86, type: 3}
   wizard: {fileID: 5737206566106309406, guid: 4d49778cd8594a74eb6c2132bf306566, type: 3}
+  knight: {fileID: 1658275064891294837, guid: b8f5c11d84e638245a078a1871c5f06f, type: 3}
   attackerGameObject: {fileID: 956732880}
   defenderGameObject: {fileID: 1133978560}
   currentTurn: {fileID: 0}
