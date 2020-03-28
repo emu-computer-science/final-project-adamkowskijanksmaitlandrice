@@ -11,7 +11,7 @@ public class TClickDetector : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+		land = TMapController.M.land;
     }
 
     // Update is called once per frame
@@ -24,16 +24,7 @@ public class TClickDetector : MonoBehaviour
             pos = Camera.main.ScreenToWorldPoint(pos);
             Vector3Int cel = land.WorldToCell(pos);
             pos = land.CellToWorld(cel);
-            /*foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
-            {
-                if (unit.transform.position == pos && 
-                    unit.GetComponent<Unit>().army == TMapController.M.currentTurn)
-                {
-                    //print("unit detected");
-                    unit.GetComponent<Unit>().clicked();
-                    return;
-                }
-            }*/
+
 			foreach (Unit unit in TMapController.M.currentTurn.troops) {
 				if (unit.gameObject.transform.position == pos) {
 					unit.clicked();

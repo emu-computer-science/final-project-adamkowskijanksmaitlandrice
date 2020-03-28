@@ -11,7 +11,7 @@ public class WClickDetector : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+		land = WMapController.M.land;
     }
 
     // Update is called once per frame

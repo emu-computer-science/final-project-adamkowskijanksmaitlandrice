@@ -8,6 +8,10 @@ public class Kingdom : MonoBehaviour {
 	public moraleState currentMorale;
 	public int armyBonus;
 
+	private void Awake() {
+		DontDestroyOnLoad(this.gameObject);
+	}
+
     // Start is called before the first frame update
     void Start() {
 		armyBonus = 0;

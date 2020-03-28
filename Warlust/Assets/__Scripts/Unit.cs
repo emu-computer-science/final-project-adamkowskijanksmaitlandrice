@@ -52,7 +52,7 @@ public class Unit : MonoBehaviour
 			foreach (SpriteRenderer csr in sr.GetComponentsInChildren<SpriteRenderer>())
 			{
 				if (csr == sr) continue;
-				if (_army == TMapController.defender)
+				if (_army == TMapController.M.defender)
 				{
 					sr.flipX = !sr.flipX;
 					csr.color = Color.blue;
@@ -250,9 +250,9 @@ public class Unit : MonoBehaviour
                                 print("killed: " + unit.GetComponent<Unit>().TakeDamage(dmg));
                                 TMapController.M.moving.GetComponent<Unit>().currentState = unitState.idle;
                                 TMapController.M.roundState = TMapController.mapRound.moving;
-                                if (TMapController.M.currentTurn == TMapController.attacker)
-                                    TMapController.M.currentTurn = TMapController.defender;
-                                else TMapController.M.currentTurn = TMapController.attacker;
+                                if (TMapController.M.currentTurn == TMapController.M.attacker)
+                                    TMapController.M.currentTurn = TMapController.M.defender;
+                                else TMapController.M.currentTurn = TMapController.M.attacker;
                                 TMapController.M.moving = null;
 								clearMove();
                                 break;

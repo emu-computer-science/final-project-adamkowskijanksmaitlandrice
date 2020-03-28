@@ -1153,98 +1153,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!1 &956732880
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 956732882}
-  - component: {fileID: 956732881}
-  m_Layer: 0
-  m_Name: Attacker
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &956732881
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 956732880}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4edc6432bab79ac448bf6aea00e917d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  troops: []
-  currentMorale: 0
-  armyBonus: 0
---- !u!4 &956732882
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 956732880}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.103315, y: -0.033033587, z: -57.85971}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1133978560
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1133978562}
-  - component: {fileID: 1133978561}
-  m_Layer: 0
-  m_Name: Defender
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1133978561
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1133978560}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4edc6432bab79ac448bf6aea00e917d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  troops: []
-  currentMorale: 0
-  armyBonus: 0
---- !u!4 &1133978562
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1133978560}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.103315, y: -0.033033587, z: -57.85971}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1170759533
 GameObject:
   m_ObjectHideFlags: 0
@@ -9216,8 +9124,14 @@ MonoBehaviour:
   warrior: {fileID: 2556782367435074416, guid: 766f5d2c8371eae4c881cbc6b288ba86, type: 3}
   wizard: {fileID: 5737206566106309406, guid: 4d49778cd8594a74eb6c2132bf306566, type: 3}
   knight: {fileID: 1658275064891294837, guid: b8f5c11d84e638245a078a1871c5f06f, type: 3}
-  attackerGameObject: {fileID: 956732880}
-  defenderGameObject: {fileID: 1133978560}
+  armyPrefab: {fileID: 1483463670181941981, guid: 2e1b187193f67144d96c39403e190627,
+    type: 3}
+  attackerGameObject: {fileID: 1483463670181941981, guid: 2e1b187193f67144d96c39403e190627,
+    type: 3}
+  defenderGameObject: {fileID: 1483463670181941981, guid: 2e1b187193f67144d96c39403e190627,
+    type: 3}
+  attacker: {fileID: 0}
+  defender: {fileID: 0}
   currentTurn: {fileID: 0}
   moving: {fileID: 0}
   roundState: 0
@@ -9230,10 +9144,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1940724233}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9448015052606184da68dacfeb697988, type: 3}
+  m_Script: {fileID: 11500000, guid: 7f64f8335899948469493ce562d0a3cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  land: {fileID: 1718331745}
+  attackerMinX: -2.5
+  attackerMaxX: -0.5
+  defenderMinX: 6.5
+  defenderMaxX: 8.5
+  land: {fileID: 0}
+  currentArmy: {fileID: 0}
 --- !u!114 &1940724239
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -29,11 +29,25 @@ public class WMapController : MonoBehaviour
     private List<Vector3Int> excludeRange;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         M = this;
         red = redGameObject.GetComponent<Kingdom>();
         blue = blueGameObject.GetComponent<Kingdom>();
+		/*red = GameState.GS.kingdoms[0];
+		blue = GameState.GS.kingdoms[1];
+
+		foreach (Squad squadron in red.squadrons) {
+			squadron.land = land;
+			squadron.SetPosition(squadron.currentPlayerTile);
+			squadron.sqArmy = red;
+		}
+		foreach (Squad squadron in blue.squadrons) {
+			squadron.land = land;
+			squadron.SetPosition(squadron.currentPlayerTile);
+			squadron.sqArmy = blue;
+		}*/
+
         currentTurn = red;
 
         List<Unit> standard = new List<Unit>() { archer, warrior, wizard };
@@ -138,6 +152,7 @@ public class WMapController : MonoBehaviour
                     {
                         print("Attack!");
                         // do the actual stuff here...
+						//GameState.GS.events.Add(new GameEvent(moving.GetComponent<Squad>().army, unit.GetComponent<Squad>().army, eventType.attacks));
 						SceneManager.LoadScene("Tactical", LoadSceneMode.Single);
                         break;
                     }

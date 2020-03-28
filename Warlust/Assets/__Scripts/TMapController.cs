@@ -18,34 +18,44 @@ public class TMapController : MonoBehaviour
     public GameObject warrior;
     public GameObject wizard;
 	public GameObject knight;
+	public GameObject armyPrefab;
     public GameObject attackerGameObject;
     public GameObject defenderGameObject;
 
     [Header("Set Dynamically")]
-    public static Army attacker;
-    public static Army defender;
+    public Army attacker;
+    public Army defender;
     public Army currentTurn;
     public GameObject moving;
     public mapRound roundState;
 
     public static TMapController M;
 
+	private void Awake() {
+		M = this;
+		attackerGameObject = Instantiate(armyPrefab);
+		defenderGameObject = Instantiate(armyPrefab);
+        attacker = attackerGameObject.GetComponent<Army>();
+        defender = defenderGameObject.GetComponent<Army>();
+
+		/*GameEvent tEvent = GameState.GS.events[0];
+		GameState.GS.events.Remove(tEvent);
+		attacker = tEvent.initiator;
+		defender = tEvent.target;
+		attackerGameObject = attacker.gameObject;
+		defenderGameObject = defender.gameObject;*/
+	}
+
     // Start is called before the first frame update
     void Start()
     {
-        M = this;
-        attacker = attackerGameObject.GetComponent<Army>();
-        defender = defenderGameObject.GetComponent<Army>();
         currentTurn = attacker;
         roundState = mapRound.moving;
 
-        makeUnit(archer, 'A', 1, -2);
-        makeUnit(warrior, 'A', -2, -1);
-        makeUnit(wizard, 'D', 7, 1);
-		makeUnit(knight, 'D', 5, 1);
-
-		attacker.BeginTurn();
-		defender.EndTurn();
+        //makeUnit(archer, 'A', 1, -2);
+        //makeUnit(warrior, 'A', -2, -1);
+        //makeUnit(wizard, 'D', 7, 1);
+		//makeUnit(knight, 'D', 5, 1);*/
     }
 
     // Update is called once per frame
@@ -68,6 +78,22 @@ public class TMapController : MonoBehaviour
 		}
     }
 
+	public void StartBattle() {
+		Destroy(gameObject.GetComponent<SetUnitController>());
+		gameObject.AddComponent<TClickDetector>();
+
+		attacker.OnTacticalBattleStart();
+		defender.OnTacticalBattleStart();
+
+		attacker.BeginTurn();
+		defender.EndTurn();
+	}
+
+	public void PlaceUnit(GameObject unit) {
+		Unit unitScript = unit.GetComponent<Unit>();
+		unit.transform.position = land.CellToWorld(unitScript.currentPlayerTile);
+	}
+
     public void makeUnit(GameObject prefab, char team, int x, int y)
     {
         GameObject unit = Instantiate(prefab);
@@ -87,24 +113,9 @@ public class TMapController : MonoBehaviour
         }
     }
 
-    public void endMove(Vector3Int cel)
-    {
-        moving.GetComponent<Unit>().endMove(cel);
+    public void endMove(Vector3Int cel) {
+		if (moving != null) moving.GetComponent<Unit>().endMove(cel);
     }
-
-    /*
-	public void UnitAttacked(Unit attackedUnit, Vector3 destTile) {
-		foreach (Vector3Int v in withinRange)
-        {
-            if (destTile == v)
-            {
-                attackedUnit.TakeDamage(moving.GetComponent<Unit>().Attack());
-                break;
-            }
-        }
-        clearMove();
-	}
-    */
 
 	public void ArmyLost(Army loser) {
 		if (loser == attacker) {
