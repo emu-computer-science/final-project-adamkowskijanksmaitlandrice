@@ -15,6 +15,7 @@ public class Squad : MonoBehaviour
 	public Army army;
 
 	private Kingdom _sqArmy;
+	private int _ID;
 
 
     void Start()
@@ -34,7 +35,12 @@ public class Squad : MonoBehaviour
     {
 
     }
-    
+
+	public int ID {
+		set {_ID = value;}
+		get {return _ID;}
+	}
+
 	public Kingdom sqArmy {
 		set 
 		{
@@ -50,6 +56,7 @@ public class Squad : MonoBehaviour
     {
         currentPlayerTile.x = v.x;
         currentPlayerTile.y = v.y;
+		_sqArmy.squadrons[_ID].coordinates = new int[] {v.x, v.y, v.z};
         transform.position = land.CellToWorld(currentPlayerTile);
     }
 

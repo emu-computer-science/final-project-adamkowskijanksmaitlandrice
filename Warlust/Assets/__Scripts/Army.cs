@@ -19,7 +19,8 @@ public class Army : MonoBehaviour {
 	public GameObject archerPrefab;
 	public GameObject knightPrefab;
 	public GameObject wizardPrefab;
-	public List<string> unitDescriptions;
+	//public List<string> unitDescriptions;
+	public string[] unitDescriptions;
 
 	//public List<UnitDescription> descriptions = new List<UnitDescription>();
 

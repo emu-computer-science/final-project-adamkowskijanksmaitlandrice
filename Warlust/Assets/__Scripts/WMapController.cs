@@ -32,6 +32,7 @@ public class WMapController : MonoBehaviour
     void Awake()
     {
         M = this;
+		if (GameState.GS == null) {
         red = redGameObject.GetComponent<Kingdom>();
         blue = blueGameObject.GetComponent<Kingdom>();
 		/*red = GameState.GS.kingdoms[0];
@@ -48,12 +49,28 @@ public class WMapController : MonoBehaviour
 			squadron.sqArmy = blue;
 		}*/
 
-        currentTurn = red;
-
         List<Unit> standard = new List<Unit>() { archer, warrior, wizard };
         makeSquad(squadron, standard, 'O', -1, 0);
         makeSquad(squadron, standard, 'G', 1, 0);
-    }
+		currentTurn = red;
+		} else {
+			red = GameState.GS.kingdoms[0];
+			blue = GameState.GS.kingdoms[1];
+
+			int id = 0;
+			foreach (squadStruct squad in red.squadrons) {
+				makeSquad(squad, red, id);
+				id++;
+			}
+			id = 0;
+			foreach (squadStruct squad in blue.squadrons) {
+				makeSquad(squad, blue, id);
+				id++;
+			}
+			if (GameState.GS.currentTurn != null) currentTurn = GameState.GS.currentTurn;
+			else currentTurn = red;
+		}
+	}
 
     // Update is called once per frame
     void Update()
@@ -76,15 +93,29 @@ public class WMapController : MonoBehaviour
         squad.transform.position = land.CellToWorld(squadScript.currentPlayerTile);
         if (team == 'O')
         {
-            red.squadrons.Add(squadScript);
+            //red.squadrons.Add(squadScript);
             squadScript.sqArmy = red;
         }
         else
         {
-            blue.squadrons.Add(squadScript);
+            //blue.squadrons.Add(squadScript);
             squadScript.sqArmy = blue;
         }
     }
+
+	public void makeSquad(squadStruct squad, Kingdom kingdom, int armyID) {
+		GameObject squadGO = Instantiate(squadron);
+		Squad squadScript = squadGO.GetComponent<Squad>();
+		List<Unit> standard = new List<Unit>() { archer, warrior, wizard };
+		squadScript.troops = standard;
+		int x = squad.coordinates[0];
+		int y = squad.coordinates[1];
+		Vector3Int v3i = new Vector3Int(x, y, 0);
+        squadScript.currentPlayerTile = v3i;
+        squadGO.transform.position = land.CellToWorld(squadScript.currentPlayerTile);
+		squadScript.sqArmy = kingdom;
+		squadScript.ID = armyID;
+	}
 
     public void clearMove()
     {
@@ -152,7 +183,13 @@ public class WMapController : MonoBehaviour
                     {
                         print("Attack!");
                         // do the actual stuff here...
-						//GameState.GS.events.Add(new GameEvent(moving.GetComponent<Squad>().army, unit.GetComponent<Squad>().army, eventType.attacks));
+						if (currentTurn == red) {
+							GameState.GS.currentTurn = blue;
+							GameState.GS.events.Add(new GameEvent(red, moving.GetComponent<Squad>().ID, blue, unit.GetComponent<Squad>().ID, eventType.attacks));
+						} else {
+							GameState.GS.currentTurn = red;
+							GameState.GS.events.Add(new GameEvent(blue, moving.GetComponent<Squad>().ID, red, unit.GetComponent<Squad>().ID, eventType.attacks));
+						}
 						SceneManager.LoadScene("Tactical", LoadSceneMode.Single);
                         break;
                     }

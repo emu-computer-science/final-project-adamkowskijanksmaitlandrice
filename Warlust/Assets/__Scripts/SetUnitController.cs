@@ -14,7 +14,7 @@ public class SetUnitController : MonoBehaviour {
     public Tilemap land;
 	public Army currentArmy;
 
-	private List<string> unitDescriptions;
+	private string[] unitDescriptions;
 	private int index;
 	private bool attackersTurn;
 
@@ -43,7 +43,7 @@ public class SetUnitController : MonoBehaviour {
 
 			currentArmy.SetUnit(index, cel);
 			index++;
-			if (index == unitDescriptions.Count) {
+			if (index == unitDescriptions.Length) {
 				if (attackersTurn) {
 					currentArmy = TMapController.M.defender;
 					unitDescriptions = currentArmy.unitDescriptions;

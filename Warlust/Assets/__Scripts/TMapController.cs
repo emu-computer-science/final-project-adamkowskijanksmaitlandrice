@@ -31,12 +31,21 @@ public class TMapController : MonoBehaviour
 
     public static TMapController M;
 
+	private GameEvent gEvent;
+
 	private void Awake() {
 		M = this;
 		attackerGameObject = Instantiate(armyPrefab);
 		defenderGameObject = Instantiate(armyPrefab);
         attacker = attackerGameObject.GetComponent<Army>();
         defender = defenderGameObject.GetComponent<Army>();
+		if (GameState.GS != null) {
+			GameEvent temp = GameState.GS.events[0];
+			attacker.unitDescriptions = temp.initiator.squadrons[temp.initiatorArmyID].units;
+			defender.unitDescriptions = temp.target.squadrons[temp.targetID].units;
+			GameState.GS.events.Remove(temp);
+			gEvent = temp;
+		}
 
 		/*GameEvent tEvent = GameState.GS.events[0];
 		GameState.GS.events.Remove(tEvent);
@@ -120,8 +129,10 @@ public class TMapController : MonoBehaviour
 	public void ArmyLost(Army loser) {
 		if (loser == attacker) {
 			print("The attacker was defeated.\nThe defender has won!");
+			gEvent.initiator.SquadDefeated(gEvent.initiatorArmyID);
 		} else {
 			print("The attacker has defeated the defender!");
+			gEvent.target.SquadDefeated(gEvent.targetID);
 		}
 		SceneManager.LoadScene("TacticalResultsScene", LoadSceneMode.Additive);
 		SceneManager.MoveGameObjectToScene(GameObject.FindWithTag("AudioSource"), SceneManager.GetSceneByName("TacticalResultsScene"));
