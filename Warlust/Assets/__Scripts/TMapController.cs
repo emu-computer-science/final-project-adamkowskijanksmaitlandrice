@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class TMapController : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class TMapController : MonoBehaviour
 	public GameObject armyPrefab;
     public GameObject attackerGameObject;
     public GameObject defenderGameObject;
+	public Text message;
 
     [Header("Set Dynamically")]
     public Army attacker;

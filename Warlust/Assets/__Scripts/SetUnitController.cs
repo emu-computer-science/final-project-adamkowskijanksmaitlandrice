@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 public class SetUnitController : MonoBehaviour {
 	[Header("Set in Inspector")]
@@ -24,7 +25,7 @@ public class SetUnitController : MonoBehaviour {
         currentArmy = TMapController.M.attacker;
 		unitDescriptions = currentArmy.unitDescriptions;
 		index = 0;
-		print("Place your " + unitDescriptions[index]);
+		TMapController.M.message.text = ("Place your " + unitDescriptions[index]);
 		attackersTurn = true;
     }
 
@@ -49,11 +50,11 @@ public class SetUnitController : MonoBehaviour {
 					unitDescriptions = currentArmy.unitDescriptions;
 					index = 0;
 					attackersTurn = false;
-					print("Place your " + unitDescriptions[index]);
+					TMapController.M.message.text = ("Place your " + unitDescriptions[index]);
 				} else {
 					TMapController.M.StartBattle();
 				}
-			} else print("Place your " + unitDescriptions[index]);
+			} else TMapController.M.message.text = ("Place your " + unitDescriptions[index]);
         }
     }
 }
