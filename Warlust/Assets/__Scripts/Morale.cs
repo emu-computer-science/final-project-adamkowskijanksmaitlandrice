@@ -22,6 +22,8 @@ public class Morale : MonoBehaviour {
     void Start() {
         attackerMorale = 5;
 		defenderMorale = 5;
+		attackerBarGUI.value = attackerMorale;
+		defenderBarGUI.value = defenderMorale;
 		M = this;
     }
 
