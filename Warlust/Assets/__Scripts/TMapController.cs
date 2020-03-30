@@ -22,6 +22,7 @@ public class TMapController : MonoBehaviour
 	public GameObject armyPrefab;
     public GameObject attackerGameObject;
     public GameObject defenderGameObject;
+	public Text turn;
 	public Text message;
 
     [Header("Set Dynamically")]
@@ -76,12 +77,16 @@ public class TMapController : MonoBehaviour
             highlights.ClearAllTiles();
             roundState = mapRound.moving;
             moving = null;
-			print("End of current turn");
+			//print("End of current turn");
 			if (currentTurn == attacker) {
 				currentTurn = defender;
+				turn.text = "Defender's Turn";
+				message.text = "Move a unit or press \"spacebar\" to skip your turn";
 				attacker.EndTurn();
 				defender.BeginTurn();
 			}else {
+				turn.text = "Attacker's Turn";
+				message.text = "Move a unit or press \"spacebar\" to skip your turn";
 				currentTurn = attacker;
 				attacker.BeginTurn();
 				defender.EndTurn();
@@ -98,6 +103,8 @@ public class TMapController : MonoBehaviour
 
 		attacker.BeginTurn();
 		defender.EndTurn();
+		turn.text = "Attacker's Turn";
+		message.text = "Move a unit or press \"spacebar\" to skip your turn";
 	}
 
 	public void PlaceUnit(GameObject unit) {
@@ -125,8 +132,23 @@ public class TMapController : MonoBehaviour
     }
 
     public void endMove(Vector3Int cel) {
-		if (moving != null) moving.GetComponent<Unit>().endMove(cel);
+		if (moving != null) {
+			moving.GetComponent<Unit>().endMove(cel);
+			message.text = "Attack or press \"spacebar\" to end your turn";
+		}
     }
+
+	public void NextTurn() {
+		if (TMapController.M.currentTurn == TMapController.M.attacker) {
+            TMapController.M.currentTurn = TMapController.M.defender;
+			turn.text = "Defender's Turn";
+		} else {
+			TMapController.M.currentTurn = TMapController.M.attacker;
+			turn.text = "Attacker's Turn";
+		}
+        TMapController.M.moving = null;
+		TMapController.M.message.text = "Move a unit or press \"spacebar\" to skip your turn";
+	}
 
 	public void ArmyLost(Army loser) {
 		if (loser == attacker) {

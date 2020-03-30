@@ -132,7 +132,7 @@ public class Unit : MonoBehaviour
             return;
         }
 
-        print("About to start attack");
+        //print("About to start attack");
         clearMove();
         List<Vector3Int> queue = new List<Vector3Int>() { currentTile };
         for (int i = 0; i < minAtkRange - 1; i++)
@@ -246,15 +246,13 @@ public class Unit : MonoBehaviour
                             if (TMapController.M.land.WorldToCell(unit.transform.position) == v)
                             {
                                 int dmg = TMapController.M.moving.GetComponent<Unit>().Attack();
-                                print("damage: " + dmg);
-                                print("killed: " + unit.GetComponent<Unit>().TakeDamage(dmg));
+                                //print("damage: " + dmg);
+                                //print("killed: " + unit.GetComponent<Unit>().TakeDamage(dmg));
+								unit.GetComponent<Unit>().TakeDamage(dmg);
                                 TMapController.M.moving.GetComponent<Unit>().currentState = unitState.idle;
                                 TMapController.M.roundState = TMapController.mapRound.moving;
-                                if (TMapController.M.currentTurn == TMapController.M.attacker)
-                                    TMapController.M.currentTurn = TMapController.M.defender;
-                                else TMapController.M.currentTurn = TMapController.M.attacker;
-                                TMapController.M.moving = null;
 								clearMove();
+								TMapController.M.NextTurn();
                                 break;
                             }
                 break;
