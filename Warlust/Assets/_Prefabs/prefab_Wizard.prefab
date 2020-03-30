@@ -101,13 +101,9 @@ MonoBehaviour:
   maxAtkRange: 3
   atkSplash: 1
   defense: 2
-  attack: 3
+  attack: 4
   morale: 1
-  land: {fileID: 0}
-  obstacles: {fileID: 0}
-  highlights: {fileID: 0}
-  moveHighlight: {fileID: 0}
-  attackHighlight: {fileID: 0}
+  skullSprite: {fileID: 21300000, guid: 74e9ed9d213da214c83a1135667d4fdc, type: 3}
   currentPlayerTile: {x: 0, y: 0, z: 0}
   currentState: 0
 --- !u!1 &5737206567084798029

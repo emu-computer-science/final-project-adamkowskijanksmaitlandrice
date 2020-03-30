@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scenes/TacticalResultsScene.unity
     guid: a9711fdc795adcd46848a53cc87fbebb
+  - enabled: 1
+    path: Assets/_Scenes/TitleScreen.unity
+    guid: a2356078b47798a419ed93be3dc24446
   m_configObjects: {}

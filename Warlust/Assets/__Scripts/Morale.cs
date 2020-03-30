@@ -27,8 +27,6 @@ public class Morale : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        attackerBarGUI.value = attackerMorale;
-		defenderBarGUI.value = defenderMorale;
     }
 
 	public void MoraleLost(Army a, int moraleLost) {
@@ -81,5 +79,7 @@ public class Morale : MonoBehaviour {
 				attacker.SetMorale(moraleState.neutral);
 			}
 		}
+		attackerBarGUI.value = attackerMorale;
+		defenderBarGUI.value = defenderMorale;
 	}
 }

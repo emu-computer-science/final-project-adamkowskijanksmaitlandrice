@@ -7,7 +7,7 @@ public enum unitState {
 	idle,
 	moved,
 	//attacked,
-	//dead
+	dead
 }
 
 public class Unit : MonoBehaviour
@@ -21,6 +21,7 @@ public class Unit : MonoBehaviour
 	public int defense;
 	public int attack = 5; //How much damage the unit deals
 	public int morale = 1;
+	public Sprite skullSprite;
 
     [Header("Set Dynamically")]
     public Vector3Int currentPlayerTile;
@@ -131,7 +132,7 @@ public class Unit : MonoBehaviour
             return;
         }
 
-        print("About to start attack");
+        //print("About to start attack");
         clearMove();
         List<Vector3Int> queue = new List<Vector3Int>() { currentTile };
         for (int i = 0; i < minAtkRange - 1; i++)
@@ -171,7 +172,7 @@ public class Unit : MonoBehaviour
                     foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
                     {
                         if (TMapController.M.land.WorldToCell(unit.transform.position) == dir &&
-                            unit.GetComponent<Unit>().army != TMapController.M.currentTurn)
+                            unit.GetComponent<Unit>().army != TMapController.M.currentTurn && unit.GetComponent<Unit>().currentState != unitState.dead)
                         {
                             blocked = true;
                             break;
@@ -245,15 +246,13 @@ public class Unit : MonoBehaviour
                             if (TMapController.M.land.WorldToCell(unit.transform.position) == v)
                             {
                                 int dmg = TMapController.M.moving.GetComponent<Unit>().Attack();
-                                print("damage: " + dmg);
-                                print("killed: " + unit.GetComponent<Unit>().TakeDamage(dmg));
+                                //print("damage: " + dmg);
+                                //print("killed: " + unit.GetComponent<Unit>().TakeDamage(dmg));
+								unit.GetComponent<Unit>().TakeDamage(dmg);
                                 TMapController.M.moving.GetComponent<Unit>().currentState = unitState.idle;
                                 TMapController.M.roundState = TMapController.mapRound.moving;
-                                if (TMapController.M.currentTurn == TMapController.M.attacker)
-                                    TMapController.M.currentTurn = TMapController.M.defender;
-                                else TMapController.M.currentTurn = TMapController.M.attacker;
-                                TMapController.M.moving = null;
 								clearMove();
+								TMapController.M.NextTurn();
                                 break;
                             }
                 break;
@@ -266,8 +265,9 @@ public class Unit : MonoBehaviour
     
     private bool TakeDamage(int damage) {
 		if (damage > (defense + _army.armyBonus)) {
-			//currentState = unitState.dead;
-			Destroy(gameObject);
+			currentState = unitState.dead;
+			//Destroy(gameObject);
+			 gameObject.GetComponent<SpriteRenderer>().sprite = skullSprite;
 			_army.UnitDied(this);
 			return true;
 		}

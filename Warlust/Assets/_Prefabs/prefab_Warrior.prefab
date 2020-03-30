@@ -96,12 +96,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveRange: 4
+  flying: 0
   minAtkRange: 1
   maxAtkRange: 1
   atkSplash: 0
   defense: 4
   attack: 5
-  land: {fileID: 0}
+  morale: 1
+  skullSprite: {fileID: 21300000, guid: 74e9ed9d213da214c83a1135667d4fdc, type: 3}
   currentPlayerTile: {x: 0, y: 0, z: 0}
   currentState: 0
 --- !u!1 &2556782367974348848
