@@ -37,6 +37,7 @@ public class TMapController : MonoBehaviour
         defender = defenderGameObject.GetComponent<Army>();
         currentTurn = attacker;
         roundState = mapRound.moving;
+        moving = null;
 
         makeUnit(archer, 'A', 1, -2);
         makeUnit(warrior, 'A', -2, -1);
@@ -87,7 +88,7 @@ public class TMapController : MonoBehaviour
 
     public void endMove(Vector3Int cel)
     {
-        moving.GetComponent<Unit>().endMove(cel);
+        if (moving != null) moving.GetComponent<Unit>().endMove(cel);
     }
 
     /*
