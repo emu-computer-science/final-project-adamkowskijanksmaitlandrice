@@ -31,6 +31,12 @@ public class Morale : MonoBehaviour {
     void Update() {
     }
 
+	public void SwapColors()
+	{
+		attackerBarGUI.GetComponentInChildren<Image>().color = Color.blue;
+		defenderBarGUI.GetComponentInChildren<Image>().color = Color.red;
+	}
+
 	public void MoraleLost(Army a, int moraleLost) {
 		if (a == TMapController.M.attacker) MoraleGained(TMapController.M.defender, moraleLost);
 		else MoraleGained(TMapController.M.attacker, moraleLost);

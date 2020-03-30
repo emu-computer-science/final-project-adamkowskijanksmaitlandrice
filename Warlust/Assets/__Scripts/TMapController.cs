@@ -48,6 +48,7 @@ public class TMapController : MonoBehaviour
 			attacker.kingdom = GameState.GS.events[0].initiator;
 			defender.unitDescriptions = temp.target.squadrons[temp.targetID].units;
 			defender.kingdom = GameState.GS.events[0].target;
+
 			GameState.GS.events.Remove(temp);
 			gEvent = temp;
 		}
@@ -63,7 +64,10 @@ public class TMapController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        currentTurn = attacker;
+		if (attacker.kingdom == WMapController.M.blue)
+			Canvas.FindObjectOfType<Morale>().SwapColors();
+
+		currentTurn = attacker;
         roundState = mapRound.moving;
         moving = null;
 
