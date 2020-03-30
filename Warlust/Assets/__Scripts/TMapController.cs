@@ -45,7 +45,9 @@ public class TMapController : MonoBehaviour
 		if (GameState.GS != null) {
 			GameEvent temp = GameState.GS.events[0];
 			attacker.unitDescriptions = temp.initiator.squadrons[temp.initiatorArmyID].units;
+			attacker.kingdom = GameState.GS.events[0].initiator;
 			defender.unitDescriptions = temp.target.squadrons[temp.targetID].units;
+			defender.kingdom = GameState.GS.events[0].target;
 			GameState.GS.events.Remove(temp);
 			gEvent = temp;
 		}

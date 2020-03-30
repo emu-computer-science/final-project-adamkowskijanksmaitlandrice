@@ -53,10 +53,9 @@ public class Unit : MonoBehaviour
 			{
 				if (csr == sr) continue;
 				if (_army == TMapController.M.defender)
-				{
 					sr.flipX = !sr.flipX;
-					csr.color = Color.blue;
-				}
+                if (_army.kingdom == WMapController.M.blue)
+                    csr.color = Color.blue;
 			}
 		}
 		get {
@@ -246,9 +245,9 @@ public class Unit : MonoBehaviour
                             if (TMapController.M.land.WorldToCell(unit.transform.position) == v)
                             {
                                 int dmg = TMapController.M.moving.GetComponent<Unit>().Attack();
-                                //print("damage: " + dmg);
-                                //print("killed: " + unit.GetComponent<Unit>().TakeDamage(dmg));
-								unit.GetComponent<Unit>().TakeDamage(dmg);
+                                print("damage: " + dmg);
+                                print("killed: " + unit.GetComponent<Unit>().TakeDamage(dmg));
+								//unit.GetComponent<Unit>().TakeDamage(dmg);
                                 TMapController.M.moving.GetComponent<Unit>().currentState = unitState.idle;
                                 TMapController.M.roundState = TMapController.mapRound.moving;
 								clearMove();
@@ -260,11 +259,11 @@ public class Unit : MonoBehaviour
     }
 
     private int Attack() {
-		return Random.Range(1, attack) + _army.armyBonus;
+		return Random.Range(0, attack) + 1 +_army.armyBonus;
 	}
     
     private bool TakeDamage(int damage) {
-		if (damage > (defense + _army.armyBonus)) {
+		if (damage > (defense)) { //+ _army.armyBonus)) {
 			currentState = unitState.dead;
 			//Destroy(gameObject);
 			 gameObject.GetComponent<SpriteRenderer>().sprite = skullSprite;

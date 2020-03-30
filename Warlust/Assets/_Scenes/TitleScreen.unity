@@ -233,7 +233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d585a3f6c1035a43bee77c407a4a077, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  armyPrefab: {fileID: 1483463670181941981, guid: 2e1b187193f67144d96c39403e190627,
+  armyPrefab: {fileID: 1483463670181941981, guid: 31a6345a7602ba44d9bcd5266758b68a,
     type: 3}
   unitPrefabs:
   - {fileID: 2556782367435074416, guid: 766f5d2c8371eae4c881cbc6b288ba86, type: 3}

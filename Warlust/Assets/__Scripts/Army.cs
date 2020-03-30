@@ -25,6 +25,7 @@ public class Army : MonoBehaviour {
 	//public List<UnitDescription> descriptions = new List<UnitDescription>();
 
 	[Header("Set Dynamically")]
+	public Kingdom kingdom;
 	public List<Unit> troops;
 	public moraleState currentMorale;
 	public int armyBonus;

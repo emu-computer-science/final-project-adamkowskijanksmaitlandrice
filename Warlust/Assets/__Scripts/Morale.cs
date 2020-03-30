@@ -40,6 +40,7 @@ public class Morale : MonoBehaviour {
 
 		if (a == attacker) {
 			if (attackerMorale <= lowMorale) {
+				print("x2!");
 				moraleGained *= 2;
 			}
 			attackerMorale += moraleGained;
@@ -60,6 +61,7 @@ public class Morale : MonoBehaviour {
 			}
 		} else {
 			if (defenderMorale <= lowMorale) {
+				print("x2!");
 				moraleGained *= 2;
 			}
 			defenderMorale += moraleGained;

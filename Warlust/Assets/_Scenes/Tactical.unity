@@ -1265,7 +1265,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 0}
+  m_SizeDelta: {x: 500, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1170759535
 MonoBehaviour:
@@ -1313,7 +1313,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 10
   m_WholeNumbers: 0
-  m_Value: 10
+  m_Value: 5
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1352,7 +1352,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 0}
+  m_SizeDelta: {x: 500, y: 0}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1189285103
 MonoBehaviour:
@@ -1400,7 +1400,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 10
   m_WholeNumbers: 0
-  m_Value: 10
+  m_Value: 5
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -9201,7 +9201,7 @@ MonoBehaviour:
   warrior: {fileID: 2556782367435074416, guid: 766f5d2c8371eae4c881cbc6b288ba86, type: 3}
   wizard: {fileID: 5737206566106309406, guid: 4d49778cd8594a74eb6c2132bf306566, type: 3}
   knight: {fileID: 1658275064891294837, guid: b8f5c11d84e638245a078a1871c5f06f, type: 3}
-  armyPrefab: {fileID: 1483463670181941981, guid: 2e1b187193f67144d96c39403e190627,
+  armyPrefab: {fileID: 1483463670181941981, guid: 31a6345a7602ba44d9bcd5266758b68a,
     type: 3}
   attackerGameObject: {fileID: 1483463670181941981, guid: 2e1b187193f67144d96c39403e190627,
     type: 3}
