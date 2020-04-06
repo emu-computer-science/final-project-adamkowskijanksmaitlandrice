@@ -25,7 +25,7 @@ public class SetUnitController : MonoBehaviour {
         currentArmy = TMapController.M.attacker;
 		unitDescriptions = currentArmy.unitDescriptions;
 		index = 0;
-		TMapController.M.turn.text = "Attacker's Turn";
+		TMapController.M.turn.text = "Attacker's Turn\nPlace your units along the left side of the screen.";
 		TMapController.M.message.text = ("Place your " + unitDescriptions[index]);
 		attackersTurn = true;
     }
@@ -51,7 +51,7 @@ public class SetUnitController : MonoBehaviour {
 					unitDescriptions = currentArmy.unitDescriptions;
 					index = 0;
 					attackersTurn = false;
-					TMapController.M.turn.text = "Defender's Turn";
+					TMapController.M.turn.text = "Defender's Turn\nPlace your units along the right side of the screen.";
 					TMapController.M.message.text = ("Place your " + unitDescriptions[index]);
 				} else {
 					TMapController.M.StartBattle();

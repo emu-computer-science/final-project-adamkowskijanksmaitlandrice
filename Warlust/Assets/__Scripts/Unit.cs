@@ -20,6 +20,7 @@ public class Unit : MonoBehaviour
 	public int atkSplash;
 	public int defense;
 	public int attack = 5; //How much damage the unit deals
+	public int damage = 10;
 	public int morale = 1;
 	public Sprite skullSprite;
 
@@ -30,6 +31,11 @@ public class Unit : MonoBehaviour
 	private Army _army;
     private List<Vector3Int> withinRange;
     private List<Vector3Int> excludeRange;
+	private int _hitpoints = 5;
+
+	public int hitpoints {
+		get {return _hitpoints;}
+	}
 
     void Start()
     {
@@ -244,10 +250,15 @@ public class Unit : MonoBehaviour
                         foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
                             if (TMapController.M.land.WorldToCell(unit.transform.position) == v)
                             {
-                                int dmg = TMapController.M.moving.GetComponent<Unit>().Attack();
-                                print("damage: " + dmg);
-                                print("killed: " + unit.GetComponent<Unit>().TakeDamage(dmg));
+                                //int dmg = TMapController.M.moving.GetComponent<Unit>().Attack();
+                                //print("damage: " + dmg);
+                                //print("killed: " + unit.GetComponent<Unit>().TakeDamage(dmg));
 								//unit.GetComponent<Unit>().TakeDamage(dmg);
+								int dmg = this.attackRoll;
+								if (unit.GetComponent<Unit>().AttackHit(dmg)) {
+									unit.GetComponent<Unit>().TakeDamage(10);
+									//unit.GetComponent<Unit>().TakeDamage(this.damageRoll);
+								}
                                 TMapController.M.moving.GetComponent<Unit>().currentState = unitState.idle;
                                 TMapController.M.roundState = TMapController.mapRound.moving;
 								clearMove();
@@ -258,12 +269,23 @@ public class Unit : MonoBehaviour
         }
     }
 
-    private int Attack() {
-		return Random.Range(0, attack) + 1 +_army.armyBonus;
+    public int attackRoll {
+		get {return Random.Range(0, attack) + 1 +_army.armyBonus;}
 	}
-    
-    private bool TakeDamage(int damage) {
-		if (damage > (defense)) { //+ _army.armyBonus)) {
+
+	public int damageRoll {
+		get {return Random.Range(0, damage) + 1;}
+	}
+
+	//This method returns true if an attack hit
+    public bool AttackHit(int attackRoll) {
+		return attackRoll >= defense;
+	}
+
+	//This method returns true if the unit was killed by an attack
+    public bool TakeDamage(int damage) {
+		_hitpoints -= damage;
+		if (_hitpoints <= 0) { //+ _army.armyBonus)) {
 			currentState = unitState.dead;
 			//Destroy(gameObject);
 			 gameObject.GetComponent<SpriteRenderer>().sprite = skullSprite;
