@@ -168,4 +168,45 @@ public class TMapController : MonoBehaviour
 		SceneManager.LoadScene("TacticalResultsScene", LoadSceneMode.Additive);
 		SceneManager.MoveGameObjectToScene(GameObject.FindWithTag("AudioSource"), SceneManager.GetSceneByName("TacticalResultsScene"));
 	}
+
+	public struct tileStruct
+	{
+		public bool land;
+		public bool obstacle;
+		public bool dead;
+		public Army army;
+	}
+
+	public tileStruct TileHas(Vector3Int pos)
+	{
+		tileStruct tileHas = new tileStruct();
+		if (land.HasTile(pos)) tileHas.land = true;
+		if (obstacles.HasTile(pos)) tileHas.obstacle = true;
+		foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
+		{
+			if (land.WorldToCell(unit.transform.position) == pos &&
+				unit.GetComponent<Unit>().currentState == unitState.dead)
+			{
+				tileHas.dead = true;
+				break;
+			}
+			if (land.WorldToCell(unit.transform.position) == pos)
+			{
+				tileHas.army = unit.GetComponent<Unit>().army;
+				break;
+			}
+		}
+		return tileHas;
+	}
+
+	public void SetHighlight(Vector3Int pos, char color)
+	{
+		if (color == 'M') highlights.SetTile(pos, moveHighlight);
+		else highlights.SetTile(pos, attackHighlight);
+	}
+
+	public void ClearHighlights()
+	{
+		highlights.ClearAllTiles();
+	}
 }

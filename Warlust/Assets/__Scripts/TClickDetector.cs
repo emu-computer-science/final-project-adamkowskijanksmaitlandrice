@@ -5,13 +5,10 @@ using UnityEngine.Tilemaps;
 
 public class TClickDetector : MonoBehaviour
 {
-    [Header("Set in Inspector")]
-    public Tilemap land;
-
     // Start is called before the first frame update
     void Start()
     {
-		land = TMapController.M.land;
+
     }
 
     // Update is called once per frame
@@ -22,8 +19,8 @@ public class TClickDetector : MonoBehaviour
             Vector3 pos = Input.mousePosition;
             pos.z = 10;
             pos = Camera.main.ScreenToWorldPoint(pos);
-            Vector3Int cel = land.WorldToCell(pos);
-            pos = land.CellToWorld(cel);
+            Vector3Int cel = TMapController.M.land.WorldToCell(pos);
+            pos = TMapController.M.land.CellToWorld(cel);
 
 			foreach (Unit unit in TMapController.M.currentTurn.troops) {
 				if (unit.gameObject.transform.position == pos) {
@@ -34,6 +31,4 @@ public class TClickDetector : MonoBehaviour
             TMapController.M.endMove(cel);
         }
     }
-
-
 }

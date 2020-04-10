@@ -95,7 +95,7 @@ public class Unit : MonoBehaviour
 
     private void clearMove()
     {
-        TMapController.M.highlights.ClearAllTiles();
+        TMapController.M.ClearHighlights();
         withinRange = new List<Vector3Int>();
         excludeRange = new List<Vector3Int>();
     }
@@ -121,7 +121,7 @@ public class Unit : MonoBehaviour
         for (int i = 0; i < moveRange; i++)
             queue = updateQueue(queue, 'M', true);
         foreach (Vector3Int v in withinRange)
-            TMapController.M.highlights.SetTile(v, TMapController.M.moveHighlight);
+            TMapController.M.SetHighlight(v, 'M');
     }
 
     private void startAttack(GameObject toAttack, Vector3Int currentTile, int minAtkRange, int maxAtkRange)
@@ -145,7 +145,7 @@ public class Unit : MonoBehaviour
         for (int i = 0; i < maxAtkRange - minAtkRange + 1; i++)
             queue = updateQueue(queue, 'A', true);
         foreach (Vector3Int v in withinRange)
-            TMapController.M.highlights.SetTile(v, TMapController.M.attackHighlight);
+            TMapController.M.SetHighlight(v, 'A');
     }
 
     private List<Vector3Int> updateQueue(List<Vector3Int> queue, char mode, bool include)
@@ -166,55 +166,22 @@ public class Unit : MonoBehaviour
             foreach (Vector3Int dir in new Vector3Int[] {
                 left, right, upLeft, upRight, downLeft, downRight})
             {
-                bool canPass = ((TMapController.M.land.HasTile(dir) && 
-                                 !TMapController.M.obstacles.HasTile(dir)) || 
-                                flying == true || 
-                                mode == 'A');
-                if (!canPass) continue;
-                if (mode == 'M' && flying == false)
-                {
-                    bool blocked = false;
-                    foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
-                    {
-                        if (TMapController.M.land.WorldToCell(unit.transform.position) == dir &&
-                            unit.GetComponent<Unit>().army != TMapController.M.currentTurn && unit.GetComponent<Unit>().currentState != unitState.dead)
-                        {
-                            blocked = true;
-                            break;
-                        }
-                    }
-                    if (blocked) continue;
-                }
+                TMapController.tileStruct tileHas = TMapController.M.TileHas(dir);
 
-                if (TMapController.M.land.HasTile(dir) && 
-                    !TMapController.M.obstacles.HasTile(dir) && 
-                    !withinRange.Contains(dir) && 
-                    !excludeRange.Contains(dir))
-                {
-                    bool OK = true;
-                    foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
-                    {
-                        if (mode == 'M')
-                        {
-                            if (TMapController.M.land.WorldToCell(unit.transform.position) == dir)
-                            {
-                                OK = false;
-                                break;
-                            }
-                        }
-                        else if (TMapController.M.land.WorldToCell(unit.transform.position) == dir &&
-                                 unit.GetComponent<Unit>().army == TMapController.M.currentTurn)
-                        {
-                            OK = false;
-                            break;
-                        }
-                    }
-                    if (OK)
+                if (!((tileHas.land && !tileHas.obstacle) || flying == true || mode == 'A')) 
+                    continue;
+
+                if (mode == 'M' && flying == false && tileHas.army != null && tileHas.army != army) 
+                    continue;
+
+                if (tileHas.land && !tileHas.obstacle && 
+                    !withinRange.Contains(dir) && !excludeRange.Contains(dir))
+                    if (!((mode == 'M') && (tileHas.army != null || tileHas.dead) ||
+                          (tileHas.army == army || tileHas.dead)))
                     {
                         if (include) withinRange.Add(dir);
                         else excludeRange.Add(dir);
                     }
-                }
                 queue2.Add(dir);
             }
         }
@@ -271,10 +238,6 @@ public class Unit : MonoBehaviour
 
     public int attackRoll {
 		get {return Random.Range(0, attack) + 1 +_army.armyBonus;}
-	}
-
-	public int damageRoll {
-		get {return Random.Range(0, damage) + 1;}
 	}
 
 	//This method returns true if an attack hit
