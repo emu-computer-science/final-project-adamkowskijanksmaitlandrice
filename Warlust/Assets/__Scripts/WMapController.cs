@@ -41,17 +41,17 @@ public class WMapController : MonoBehaviour
 		foreach (Squad squadron in red.squadrons) {
 			squadron.land = land;
 			squadron.SetPosition(squadron.currentPlayerTile);
-			squadron.sqArmy = red;
+			squadron.sqKingdom = red;
 		}
 		foreach (Squad squadron in blue.squadrons) {
 			squadron.land = land;
 			squadron.SetPosition(squadron.currentPlayerTile);
-			squadron.sqArmy = blue;
+			squadron.sqKingdom = blue;
 		}*/
 
         List<Unit> standard = new List<Unit>() { archer, warrior, wizard };
-        makeSquad(squadron, standard, 'O', -1, 0);
-        makeSquad(squadron, standard, 'G', 1, 0);
+        makeSquad(squadron, standard, 'R', -1, 0);
+        makeSquad(squadron, standard, 'B', 1, 0);
 		currentTurn = red;
 		} else {
 			red = GameState.GS.kingdoms[0];
@@ -91,15 +91,15 @@ public class WMapController : MonoBehaviour
         Vector3Int v3i = new Vector3Int(x, y, 0);
         squadScript.currentPlayerTile = v3i;
         squad.transform.position = land.CellToWorld(squadScript.currentPlayerTile);
-        if (team == 'O')
+        if (team == 'R')
         {
             //red.squadrons.Add(squadScript);
-            squadScript.sqArmy = red;
+            squadScript.sqKingdom = red;
         }
         else
         {
             //blue.squadrons.Add(squadScript);
-            squadScript.sqArmy = blue;
+            squadScript.sqKingdom = blue;
         }
     }
 
@@ -113,7 +113,7 @@ public class WMapController : MonoBehaviour
 		Vector3Int v3i = new Vector3Int(x, y, 0);
         squadScript.currentPlayerTile = v3i;
         squadGO.transform.position = land.CellToWorld(squadScript.currentPlayerTile);
-		squadScript.sqArmy = kingdom;
+		squadScript.sqKingdom = kingdom;
 		squadScript.ID = armyID;
 	}
 
@@ -164,7 +164,7 @@ public class WMapController : MonoBehaviour
         return queue;
     }
 
-    public void endMove(Vector3 destTile)
+    public void endMove(Vector3Int destTile)
     {
         if (moving == null)
         {
@@ -172,34 +172,30 @@ public class WMapController : MonoBehaviour
             return;
         }
 
-        foreach (Vector3Int v in withinRange)
+        if (withinRange.Contains(destTile))
         {
-            if (destTile == v)
+            foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
             {
-                foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
+                if (land.WorldToCell(unit.transform.position) == destTile &&
+                    unit.GetComponent<Squad>().sqKingdom != currentTurn)
                 {
-                    if (land.WorldToCell(unit.transform.position) == v &&
-                        unit.GetComponent<Squad>().sqArmy != currentTurn)
-                    {
-                        print("Attack!");
-                        // do the actual stuff here...
-						if (currentTurn == red) {
-							GameState.GS.currentTurn = blue;
-							GameState.GS.events.Add(new GameEvent(red, moving.GetComponent<Squad>().ID, blue, unit.GetComponent<Squad>().ID, eventType.attacks));
-						} else {
-							GameState.GS.currentTurn = red;
-							GameState.GS.events.Add(new GameEvent(blue, moving.GetComponent<Squad>().ID, red, unit.GetComponent<Squad>().ID, eventType.attacks));
-						}
-						SceneManager.LoadScene("Tactical", LoadSceneMode.Single);
-                        break;
-                    }
+                    print("Attack!");
+                    // do the actual stuff here...
+					if (currentTurn == red) {
+						GameState.GS.currentTurn = blue;
+						GameState.GS.events.Add(new GameEvent(red, moving.GetComponent<Squad>().ID, blue, unit.GetComponent<Squad>().ID, eventType.attacks));
+					} else {
+						GameState.GS.currentTurn = red;
+						GameState.GS.events.Add(new GameEvent(blue, moving.GetComponent<Squad>().ID, red, unit.GetComponent<Squad>().ID, eventType.attacks));
+					}
+					SceneManager.LoadScene("Tactical", LoadSceneMode.Single);
+                    break;
                 }
-                moving.GetComponent<Squad>().SetPosition(v);
-                if (currentTurn == red) currentTurn = blue;
-                else currentTurn = red;
-                moving = null;
-                break;
             }
+            moving.GetComponent<Squad>().SetPosition(destTile);
+            if (currentTurn == red) currentTurn = blue;
+            else currentTurn = red;
+            moving = null;
         }
         clearMove();
     }

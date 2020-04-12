@@ -27,7 +27,7 @@ public class WClickDetector : MonoBehaviour
             foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
             {
                 if (unit.transform.position == pos && 
-                    unit.GetComponent<Squad>().sqArmy == WMapController.M.currentTurn)
+                    unit.GetComponent<Squad>().sqKingdom == WMapController.M.currentTurn)
                 {
                     unit.GetComponent<Squad>().clicked();
                     return;

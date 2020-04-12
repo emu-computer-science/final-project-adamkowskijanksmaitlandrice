@@ -7,27 +7,22 @@ public class Squad : MonoBehaviour
 {
     [Header("Set in Inspector")]
     public int moveRange;
+    public Kingdom kingdom;
 
     [Header("Set Dynamically")]
-    public Tilemap land;
     public Vector3Int currentPlayerTile;
     public List<Unit> troops;
 	public Army army;
 
-	private Kingdom _sqArmy;
+	private Kingdom _sqKingdom;
 	private int _ID;
 
 
     void Start()
     {
-        Tilemap[] tms = GameObject.FindObjectsOfType<Tilemap>();
-        foreach (Tilemap tm in tms) if (tm.name == "Land")
-            {
-                land = tm;
-                break;
-            }
-        currentPlayerTile = land.WorldToCell(transform.position);
-        transform.position = land.CellToWorld(currentPlayerTile);
+        sqKingdom = kingdom;
+        currentPlayerTile = WMapController.M.land.WorldToCell(transform.position);
+        transform.position = WMapController.M.land.CellToWorld(currentPlayerTile);
     }
 
     // Update is called once per frame
@@ -41,23 +36,24 @@ public class Squad : MonoBehaviour
 		get {return _ID;}
 	}
 
-	public Kingdom sqArmy {
+	public Kingdom sqKingdom {
 		set 
 		{
-            _sqArmy = value;
+            kingdom = value;
+            _sqKingdom = kingdom;
 			SpriteRenderer sr = gameObject.GetComponent<SpriteRenderer>();
-			if (_sqArmy == WMapController.M.blue)
+			if (_sqKingdom == WMapController.M.blue)
 				sr.color = Color.blue;
 		}
-		get { return _sqArmy; }
+		get { return _sqKingdom; }
 	}
 
     public void SetPosition(Vector3Int v)
     {
         currentPlayerTile.x = v.x;
         currentPlayerTile.y = v.y;
-		_sqArmy.squadrons[_ID].coordinates = new int[] {v.x, v.y, v.z};
-        transform.position = land.CellToWorld(currentPlayerTile);
+		_sqKingdom.squadrons[_ID].coordinates = new int[] {v.x, v.y, v.z};
+        transform.position = WMapController.M.land.CellToWorld(currentPlayerTile);
     }
 
     public void clicked()
