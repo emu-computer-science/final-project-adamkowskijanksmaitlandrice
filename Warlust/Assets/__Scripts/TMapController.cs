@@ -80,18 +80,22 @@ public class TMapController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		if (Input.GetKeyDown("space")) {
-            highlights.ClearAllTiles();
-            roundState = mapRound.moving;
-            moving = null;
+		if (Input.GetKeyDown("space"))
+		{
+			highlights.ClearAllTiles();
+			roundState = mapRound.moving;
+			moving = null;
 			//print("End of current turn");
-			if (currentTurn == attacker) {
+			if (currentTurn == attacker)
+			{
 				currentTurn = defender;
 				turn.text = "Defender's Turn";
 				message.text = "Move a unit or press \"spacebar\" to skip your turn";
 				attacker.EndTurn();
 				defender.BeginTurn();
-			}else {
+			}
+			else
+			{
 				turn.text = "Attacker's Turn";
 				message.text = "Move a unit or press \"spacebar\" to skip your turn";
 				currentTurn = attacker;
@@ -99,7 +103,11 @@ public class TMapController : MonoBehaviour
 				defender.EndTurn();
 			}
 		}
-    }
+		else if (roundState == mapRound.attacking && Input.GetKeyDown("backspace"))
+		{
+			moving.GetComponent<Unit>().Undo();
+		}
+	}
 
 	public void StartBattle() {
 		Destroy(gameObject.GetComponent<SetUnitController>());
@@ -141,7 +149,7 @@ public class TMapController : MonoBehaviour
     public void endMove(Vector3Int cel) {
 		if (moving != null) {
 			moving.GetComponent<Unit>().endMove(cel);
-			message.text = "Attack or press \"spacebar\" to end your turn";
+			message.text = "Attack, press \"backspace\" to Undo or press \"spacebar\" to end your turn";
 		}
     }
 

@@ -31,6 +31,7 @@ public class Unit : MonoBehaviour
 	private Army _army;
     private List<Vector3Int> withinRange;
     private List<Vector3Int> excludeRange;
+    private Vector3Int previousTile;
 
     void Start()
     {
@@ -184,7 +185,7 @@ public class Unit : MonoBehaviour
         return queue;
     }
 
-    public void endMove(Vector3 destTile)
+    public void endMove(Vector3Int destTile)
     {
         if (TMapController.M.moving == null)
         {
@@ -192,19 +193,19 @@ public class Unit : MonoBehaviour
             return;
         }
 
-        switch (TMapController.M.moving.GetComponent<Unit>().currentState)
+        switch (currentState)
         {
             case unitState.idle:
-                foreach (Vector3Int v in withinRange)
-                    if (destTile == v)
-                    {
-                        TMapController.M.moving.GetComponent<Unit>().SetPosition(v);
-                        TMapController.M.moving.GetComponent<Unit>().currentState = unitState.moved;
-                        TMapController.M.roundState = TMapController.mapRound.attacking;
-						clearMove();
-						TMapController.M.moving.GetComponent<Unit>().startAttack(gameObject, currentPlayerTile, minAtkRange, maxAtkRange);
-                        break;
-                    }
+                if (withinRange.Contains(destTile))
+                {
+                    previousTile = currentPlayerTile;
+                    SetPosition(destTile);
+                    currentState = unitState.moved;
+                    TMapController.M.roundState = TMapController.mapRound.attacking;
+					clearMove();
+					startAttack(gameObject, currentPlayerTile, minAtkRange, maxAtkRange);
+                    break;
+                }
                 break;
             case unitState.moved:
                 foreach (Vector3Int v in withinRange)
@@ -228,6 +229,15 @@ public class Unit : MonoBehaviour
                             }
                 break;
         }
+    }
+
+    public void Undo()
+    {
+        SetPosition(previousTile);
+        TMapController.M.moving = null;
+        currentState = unitState.idle;
+        TMapController.M.roundState = TMapController.mapRound.moving;
+        TMapController.M.ClearHighlights();
     }
 
     public int attackRoll {
@@ -256,6 +266,7 @@ public class Unit : MonoBehaviour
 
 	public void StartTurn() {
 		currentState = unitState.idle;
+        previousTile = currentPlayerTile;
 	}
 
 	public void EndTurn() {
