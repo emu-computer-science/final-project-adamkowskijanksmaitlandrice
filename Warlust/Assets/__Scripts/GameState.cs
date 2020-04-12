@@ -20,7 +20,7 @@ public class GameState : MonoBehaviour {
 	private void Awake() {
 		if (GS == null) {
 			GS = this;
-			DontDestroyOnLoad(this.gameObject);
+			// DontDestroyOnLoad(this.gameObject);
 		} else {
 			Destroy(this);
 		}
