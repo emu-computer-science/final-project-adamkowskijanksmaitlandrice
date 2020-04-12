@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/_Scenes/TitleScreen.unity
+    guid: a2356078b47798a419ed93be3dc24446
+  - enabled: 1
     path: Assets/_Scenes/World.unity
     guid: a315f8c674e5c544e811367c1c26af54
   - enabled: 1
@@ -14,9 +17,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scenes/TacticalResultsScene.unity
     guid: a9711fdc795adcd46848a53cc87fbebb
-  - enabled: 1
-    path: Assets/_Scenes/TitleScreen.unity
-    guid: a2356078b47798a419ed93be3dc24446
   - enabled: 1
     path: Assets/_Scenes/Options.unity
     guid: d55bd7cf3ac456b40a43f908f6165b6d
