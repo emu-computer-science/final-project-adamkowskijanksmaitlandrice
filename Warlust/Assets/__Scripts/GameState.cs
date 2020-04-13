@@ -42,7 +42,9 @@ public class GameState : MonoBehaviour {
 		//New game stuff here
 		kingdoms = new List<Kingdom>();
 		kingdoms.Add(gameObject.AddComponent<Kingdom>());
-		kingdoms[0].AddSquadron(new squadStruct(new int[] {1, 0, 0}, new string[] {"knight", "archer", "archer", "archer", "warrior"}));
+		kingdoms[0].AddSquadron(new squadStruct(new int[] {1, 0, 0}, new string[] {"archer", "archer", "warrior"}));
+		kingdoms.Add(gameObject.AddComponent<Kingdom>());
+		kingdoms[0].AddSquadron(new squadStruct(new int[] { 3, 0, 0 }, new string[] { "knight", "wizard", "wizard" }));
 		//kingdoms[0].squadrons[0].coordinates =  new float[] {1, 0, 0};
 		//kingdoms[0].squadrons[0].units = new string[] {"knight", "archer", "archer", "archer", "warrior"};
 		//kingdoms[0].squadrons[0].sqArmy = kingdoms[0];

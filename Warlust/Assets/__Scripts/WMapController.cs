@@ -68,7 +68,7 @@ public class WMapController : MonoBehaviour
 				id++;
 			}
 			if (GameState.GS.currentTurn != null) currentTurn = GameState.GS.currentTurn;
-			else currentTurn = red;
+			else currentTurn = blue;
 		}
 	}
 
@@ -193,7 +193,16 @@ public class WMapController : MonoBehaviour
                 }
             }
             moving.GetComponent<Squad>().SetPosition(destTile);
-            if (currentTurn == red) currentTurn = blue;
+
+            foreach (GameObject town in GameObject.FindGameObjectsWithTag("Town"))
+                if (land.WorldToCell(town.transform.position) == destTile &&
+                    town.GetComponent<Town>().townKingdom != currentTurn)
+                {
+                    town.GetComponent<Town>().Flip();
+                    print("Town taken!");
+                }
+
+                    if (currentTurn == red) currentTurn = blue;
             else currentTurn = red;
             moving = null;
         }

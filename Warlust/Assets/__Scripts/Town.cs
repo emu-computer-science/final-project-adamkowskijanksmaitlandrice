@@ -43,7 +43,7 @@ public class Town : MonoBehaviour
         
     }
 
-    void Flip()
+    public void Flip()
     {
         if (kingdom == WMapController.M.red)
         {
