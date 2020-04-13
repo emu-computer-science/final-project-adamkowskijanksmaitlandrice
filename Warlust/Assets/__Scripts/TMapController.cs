@@ -154,6 +154,7 @@ public class TMapController : MonoBehaviour
     }
 
 	public void NextTurn() {
+		currentTurn.EndTurn();
 		if (TMapController.M.currentTurn == TMapController.M.attacker) {
             TMapController.M.currentTurn = TMapController.M.defender;
 			turn.text = "Defender's Turn";
@@ -163,6 +164,7 @@ public class TMapController : MonoBehaviour
 		}
         TMapController.M.moving = null;
 		TMapController.M.message.text = "Move a unit or press \"spacebar\" to skip your turn";
+		currentTurn.BeginTurn();
 	}
 
 	public void ArmyLost(Army loser) {

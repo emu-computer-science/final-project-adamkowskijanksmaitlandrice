@@ -29,10 +29,14 @@ public class Army : MonoBehaviour {
 	public List<Unit> troops;
 	public moraleState currentMorale;
 	public int armyBonus;
+	public List<Unit> activeTroops;
+	public List<Unit> inactiveTroops;
 
 	private void Awake() {
 		//DontDestroyOnLoad(this.gameObject);
 		troops = new List<Unit>();
+		activeTroops = new List<Unit>();
+		inactiveTroops = new List<Unit>();
 	}
 
     // Start is called before the first frame update
@@ -104,6 +108,7 @@ public class Army : MonoBehaviour {
 		TMapController.M.PlaceUnit(unit);
         unitScript.army = this;
 		troops.Add(unitScript);
+		activeTroops.Add(unitScript);
 	}
 
 	//This is just a temprorary function until we implement the morale system
@@ -123,7 +128,12 @@ public class Army : MonoBehaviour {
 	}
 
 	public void BeginTurn() {
-		foreach (Unit u in troops) {
+		if (activeTroops.Count == 0) {
+			List<Unit> temp = activeTroops;
+			activeTroops = inactiveTroops;
+			inactiveTroops = temp;
+		}
+		foreach (Unit u in activeTroops) {
 			u.StartTurn();
 		}
 	}
@@ -134,8 +144,19 @@ public class Army : MonoBehaviour {
 		}
 	}
 
+	public void UnitMoved(Unit movedUnit) {
+		activeTroops.Remove(movedUnit);
+		inactiveTroops.Add(movedUnit);
+	}
+	public void UndoMove(Unit movedUnit) {
+		inactiveTroops.Remove(movedUnit);
+		activeTroops.Add(movedUnit);
+	}
+
 	public void UnitDied(Unit deadUnit) {
 		troops.Remove(deadUnit);
+		activeTroops.Remove(deadUnit);
+		inactiveTroops.Remove(deadUnit);
 		if (troops.Count == 0)
 			TMapController.M.ArmyLost(this);
 		else Morale.M.MoraleLost(this, deadUnit.morale);

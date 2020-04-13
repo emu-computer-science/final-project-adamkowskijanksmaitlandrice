@@ -205,6 +205,7 @@ public class Unit : MonoBehaviour
                     TMapController.M.roundState = TMapController.mapRound.attacking;
 					clearMove();
 					startAttack(gameObject, currentPlayerTile, minAtkRange, maxAtkRange);
+					_army.UnitMoved(this);
                     break;
                 }
                 break;
@@ -235,6 +236,7 @@ public class Unit : MonoBehaviour
     public void Undo()
     {
         SetPosition(previousTile);
+		_army.UndoMove(this);
         TMapController.M.moving = null;
         currentState = unitState.idle;
         TMapController.M.roundState = TMapController.mapRound.moving;

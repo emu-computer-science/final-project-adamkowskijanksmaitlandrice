@@ -22,7 +22,7 @@ public class TClickDetector : MonoBehaviour
             Vector3Int cel = TMapController.M.land.WorldToCell(pos);
             pos = TMapController.M.land.CellToWorld(cel);
 
-			foreach (Unit unit in TMapController.M.currentTurn.troops) {
+			foreach (Unit unit in TMapController.M.currentTurn.activeTroops) {
 				if (unit.gameObject.transform.position == pos) {
 					unit.clicked();
 					return;
