@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 public enum unitState {
 	idle,
@@ -20,13 +20,14 @@ public class Unit : MonoBehaviour
 	public int atkSplash;
 	public int defense;
 	public int attack = 5; //How much damage the unit deals
-    public int hitpoints;
+    public int maxHP;
 	public int morale = 1;
 	public Sprite skullSprite;
 
     [Header("Set Dynamically")]
     public Vector3Int currentPlayerTile;
 	public unitState currentState;
+    public int hitpoints;
 
 	private Army _army;
     private List<Vector3Int> withinRange;
@@ -37,7 +38,7 @@ public class Unit : MonoBehaviour
     {
         currentPlayerTile = TMapController.M.land.WorldToCell(transform.position);
         transform.position = TMapController.M.land.CellToWorld(currentPlayerTile);
-
+        hitpoints = maxHP;
 		currentState = unitState.idle;
     }
 
@@ -253,6 +254,7 @@ public class Unit : MonoBehaviour
     public bool TakeDamage(int damage) {
 		hitpoints -= damage - defense;
         print("hit for " + damage + " (- " + defense + ")");
+        gameObject.GetComponentInChildren<Slider>().value = (float) hitpoints / maxHP;
 		if (hitpoints <= 0) { //+ _army.armyBonus)) {
             print("Unit killed!");
 			currentState = unitState.dead;
