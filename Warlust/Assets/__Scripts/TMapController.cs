@@ -149,7 +149,7 @@ public class TMapController : MonoBehaviour
     public void endMove(Vector3Int cel) {
 		if (moving != null) {
 			moving.GetComponent<Unit>().endMove(cel);
-			message.text = "Attack, press \"backspace\" to Undo or press \"spacebar\" to end your turn";
+			message.text = "Attack, press \"backspace\" to Undo, or press \"spacebar\" to end your turn";
 		}
     }
 

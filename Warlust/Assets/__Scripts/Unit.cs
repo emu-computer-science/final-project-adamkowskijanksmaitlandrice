@@ -19,7 +19,8 @@ public class Unit : MonoBehaviour
 	public int maxAtkRange;
 	public int atkSplash;
 	public int defense;
-	public int attack = 5; //How much damage the unit deals
+	public int attackMin;
+    public int attackMax;
     public int maxHP;
 	public int morale = 1;
 	public Sprite skullSprite;
@@ -244,7 +245,7 @@ public class Unit : MonoBehaviour
     }
 
     public int attackRoll {
-		get {return Random.Range(0, attack) + 1 +_army.armyBonus;}
+		get {return Random.Range(attackMin, attackMax + 1) +_army.armyBonus;}
 	}
 
 	//This method returns true if an attack hit
@@ -265,6 +266,7 @@ public class Unit : MonoBehaviour
 			 gameObject.GetComponent<SpriteRenderer>().sprite = skullSprite;
             if (gameObject.transform.localScale.x == 2) RescaleDeadKnight();
             _army.UnitDied(this);
+            ColorOn(false);
 			return true;
 		}
 		return false;

@@ -431,14 +431,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad1ec109099f5e74cb6dcef20f35f409, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveRange: 2
+  moveRange: 4
   flying: 1
   minAtkRange: 1
-  maxAtkRange: 3
+  maxAtkRange: 2
   atkSplash: 1
   defense: 0
-  attack: 5
-  maxHP: 4
+  attackMin: 1
+  attackMax: 6
+  maxHP: 6
   morale: 1
   skullSprite: {fileID: 21300000, guid: 74e9ed9d213da214c83a1135667d4fdc, type: 3}
   currentPlayerTile: {x: 0, y: 0, z: 0}
