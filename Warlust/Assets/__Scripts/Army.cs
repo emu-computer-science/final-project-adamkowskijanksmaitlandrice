@@ -132,6 +132,7 @@ public class Army : MonoBehaviour {
 			List<Unit> temp = activeTroops;
 			activeTroops = inactiveTroops;
 			inactiveTroops = temp;
+			foreach (Unit u in activeTroops) u.ColorOn(true);
 		}
 		foreach (Unit u in activeTroops) {
 			u.StartTurn();
@@ -147,10 +148,12 @@ public class Army : MonoBehaviour {
 	public void UnitMoved(Unit movedUnit) {
 		activeTroops.Remove(movedUnit);
 		inactiveTroops.Add(movedUnit);
+		movedUnit.ColorOn(false);
 	}
 	public void UndoMove(Unit movedUnit) {
 		inactiveTroops.Remove(movedUnit);
 		activeTroops.Add(movedUnit);
+		movedUnit.ColorOn(true);
 	}
 
 	public void UnitDied(Unit deadUnit) {

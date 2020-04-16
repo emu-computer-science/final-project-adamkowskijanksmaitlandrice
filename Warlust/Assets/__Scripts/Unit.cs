@@ -78,10 +78,10 @@ public class Unit : MonoBehaviour
     {
 		switch (currentState) {
 			case unitState.idle:
-			if (TMapController.M.moving == gameObject)
+			if (TMapController.M.moving == this)
 				endMove(currentPlayerTile);
 			else if (TMapController.M.currentTurn == _army)
-				startMove(gameObject, currentPlayerTile, moveRange);
+				startMove(this, currentPlayerTile, moveRange);
 			//else TMapController.M.UnitAttacked(this, currentPlayerTile);
 			break;
 			//case unitState.moved:
@@ -97,7 +97,7 @@ public class Unit : MonoBehaviour
         excludeRange = new List<Vector3Int>();
     }
 
-    private void startMove(GameObject toMove, Vector3Int currentTile, int moveRange)
+    private void startMove(Unit toMove, Vector3Int currentTile, int moveRange)
     {
         if (TMapController.M.roundState != TMapController.mapRound.moving)
         {
@@ -222,7 +222,7 @@ public class Unit : MonoBehaviour
 								int dmg = this.attackRoll;
                                 if (unit.GetComponent<Unit>().AttackHit(dmg))
                                     unit.GetComponent<Unit>().TakeDamage(dmg);
-                                else print("Miss!");
+                                else unit.GetComponent<HealthDisplay>().ShowDmg("Miss!");
                                 TMapController.M.moving.GetComponent<Unit>().currentState = unitState.idle;
                                 TMapController.M.roundState = TMapController.mapRound.moving;
 								clearMove();
@@ -257,12 +257,14 @@ public class Unit : MonoBehaviour
 		hitpoints -= damage - defense;
         print("hit for " + damage + " (- " + defense + ")");
         gameObject.GetComponentInChildren<Slider>().value = (float) hitpoints / maxHP;
+        gameObject.GetComponent<HealthDisplay>().ShowDmg((damage - defense).ToString());
 		if (hitpoints <= 0) { //+ _army.armyBonus)) {
             print("Unit killed!");
 			currentState = unitState.dead;
 			//Destroy(gameObject);
 			 gameObject.GetComponent<SpriteRenderer>().sprite = skullSprite;
-			_army.UnitDied(this);
+            if (gameObject.transform.localScale.x == 2) RescaleDeadKnight();
+            _army.UnitDied(this);
 			return true;
 		}
 		return false;
@@ -276,4 +278,55 @@ public class Unit : MonoBehaviour
 	public void EndTurn() {
 		currentState = unitState.idle;
 	}
+
+    public void ColorOn(bool colorOn)
+    {
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        foreach (SpriteRenderer csr in sr.GetComponentsInChildren<SpriteRenderer>())
+        {
+            if (csr == sr) continue;
+            Color c;
+            if (_army.kingdom == WMapController.M.blue)
+            {
+                if (colorOn) c = Color.blue;
+                else c = Color.Lerp(Color.blue, Color.white, .75f);
+            }
+            else
+            {
+                if (colorOn) c = Color.red;
+                else c = Color.Lerp(Color.red, Color.white, .75f);
+            }
+            csr.color = c;
+        }
+    }
+
+    private void RescaleDeadKnight()
+    {
+        Vector3 spriteScale = new Vector3(1, 1, 1);
+        Vector3 colorScale = new Vector3(2, .75f, 1);
+        Vector3 colorPos = new Vector3(0, -.25f, 0);
+        Vector3 canvasScale = new Vector3(.1f, .1f, 1);
+        gameObject.transform.localScale = spriteScale;
+        foreach (GameObject tc in GameObject.FindGameObjectsWithTag("TeamColor"))
+        {
+            Transform tf = tc.GetComponent<Transform>();
+            foreach (Transform ptf in tc.GetComponentsInParent<Transform>())
+            {
+                if (ptf == tf) continue;
+                tf.localScale = colorScale;
+                tf.localPosition = colorPos;
+                break;
+            }
+        }
+        foreach (GameObject cv in GameObject.FindGameObjectsWithTag("Canvas"))
+        {
+            Transform tf = cv.GetComponent<Transform>();
+            foreach (Transform ptf in cv.GetComponentsInParent<Transform>())
+            {
+                if (ptf == tf) continue;
+                tf.localScale = canvasScale;
+                break;
+            }
+        }
+    }
 }

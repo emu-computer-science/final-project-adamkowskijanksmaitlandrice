@@ -29,7 +29,7 @@ public class TMapController : MonoBehaviour
     public Army attacker;
     public Army defender;
     public Army currentTurn;
-    public GameObject moving;
+    public Unit moving;
     public mapRound roundState;
 
     public static TMapController M;
@@ -155,15 +155,15 @@ public class TMapController : MonoBehaviour
 
 	public void NextTurn() {
 		currentTurn.EndTurn();
-		if (TMapController.M.currentTurn == TMapController.M.attacker) {
-            TMapController.M.currentTurn = TMapController.M.defender;
+		if (currentTurn == attacker) {
+            currentTurn = defender;
 			turn.text = "Defender's Turn";
 		} else {
-			TMapController.M.currentTurn = TMapController.M.attacker;
+			currentTurn = attacker;
 			turn.text = "Attacker's Turn";
 		}
-        TMapController.M.moving = null;
-		TMapController.M.message.text = "Move a unit or press \"spacebar\" to skip your turn";
+        moving = null;
+		message.text = "Move a unit or press \"spacebar\" to skip your turn";
 		currentTurn.BeginTurn();
 	}
 
