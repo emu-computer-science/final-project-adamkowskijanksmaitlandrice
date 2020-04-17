@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scenes/OptionsMenu.unity
     guid: d10c85226092d7647b0093ea11636aa2
+  - enabled: 1
+    path: Assets/_Scenes/WorldLandingInfo.unity
+    guid: f9077a49930a40c429b8bde66a5c879d
   m_configObjects: {}

@@ -34,7 +34,7 @@ public class WMapController : MonoBehaviour
     void Awake()
     {
         M = this;
-        SceneManager.LoadScene(5, LoadSceneMode.Additive);
+        SceneManager.LoadScene("WorldLandingInfo", LoadSceneMode.Additive);
 
         if (GameState.GS == null) {
         red = redGameObject.GetComponent<Kingdom>();
