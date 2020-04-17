@@ -55,7 +55,12 @@ public class GameState : MonoBehaviour {
 		//kingdoms[1].squadrons[0].coordinates = new float[] {-1, 0, 0};
 		//kingdoms[1].squadrons[0].units = new string[] {"knight", "archer", "archer", "archer", "warrior"};
 		//kingdoms[1].squadrons[0].sqArmy = kingdoms[1];*/
+		kingdoms[0].townIDs = new List<int>();
+		kingdoms[0].townIDs.Add(0);
+		kingdoms[1].townIDs = new List<int>();
+		kingdoms[1].townIDs.Add(1);
 		SceneManager.LoadScene("World", LoadSceneMode.Single);
+		SceneManager.LoadScene("WorldLandingInfo", LoadSceneMode.Additive);
 	}
 
 	public void LoadGame() {

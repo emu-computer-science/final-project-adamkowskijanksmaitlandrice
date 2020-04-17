@@ -478,6 +478,11 @@ PrefabInstance:
       propertyPath: setKingdom
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -986854365265924745, guid: c5525f596986c9449898ce42c46a9ce4,
+        type: 3}
+      propertyPath: townID
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6360088823570933144, guid: c5525f596986c9449898ce42c46a9ce4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1064,6 +1069,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3af10c7102b6044b98eec1da7bac0d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  townIDs: 
 --- !u!4 &956732882
 Transform:
   m_ObjectHideFlags: 0
@@ -1107,6 +1113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3af10c7102b6044b98eec1da7bac0d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  townIDs: 
 --- !u!4 &1133978562
 Transform:
   m_ObjectHideFlags: 0
@@ -15003,6 +15010,11 @@ PrefabInstance:
     - target: {fileID: -986854365265924745, guid: c5525f596986c9449898ce42c46a9ce4,
         type: 3}
       propertyPath: setKingdom
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -986854365265924745, guid: c5525f596986c9449898ce42c46a9ce4,
+        type: 3}
+      propertyPath: townID
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6360088823570933144, guid: c5525f596986c9449898ce42c46a9ce4,

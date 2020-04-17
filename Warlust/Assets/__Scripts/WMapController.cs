@@ -34,7 +34,7 @@ public class WMapController : MonoBehaviour
     void Awake()
     {
         M = this;
-        SceneManager.LoadScene("WorldLandingInfo", LoadSceneMode.Additive);
+        //SceneManager.LoadScene("WorldLandingInfo", LoadSceneMode.Additive);
 
         if (GameState.GS == null) {
         red = redGameObject.GetComponent<Kingdom>();
@@ -71,9 +71,38 @@ public class WMapController : MonoBehaviour
 				makeSquad(squad, blue, id);
 				id++;
 			}
+			/*foreach (int townID in blue.townIDs) {
+				foreach (GameObject townGO in GameObject.FindGameObjectsWithTag("town") {
+					Town town = townGO.GetComponent<Town>();
+					if (town.townKingdom != blue) town.Flip();
+				}
+			}
+			foreach (int townID in red.townIDs) {
+				foreach (GameObject townGO in GameObject.FindGameObjectsWithTag("town") {
+					Town town = townGO.GetComponent<Town>();
+					if (town.townKingdom != red) town.Flip();
+				}
+			}
+			if (GameState.GS.currentTurn != null) currentTurn = GameState.GS.currentTurn;
+			else currentTurn = blue;*/
+		}
+	}
+
+	void Start() {
+		/*foreach (int townID in blue.townIDs) {
+				foreach (GameObject townGO in GameObject.FindGameObjectsWithTag("Town")) {
+					Town town = townGO.GetComponent<Town>();
+					if (town.townKingdom != blue) town.Flip();
+				}
+			}
+			foreach (int townID in red.townIDs) {
+				foreach (GameObject townGO in GameObject.FindGameObjectsWithTag("Town")) {
+					Town town = townGO.GetComponent<Town>();
+					if (town.townKingdom != red) town.Flip();
+				}
+			}*/
 			if (GameState.GS.currentTurn != null) currentTurn = GameState.GS.currentTurn;
 			else currentTurn = blue;
-		}
 	}
 
     // Update is called once per frame
@@ -211,6 +240,9 @@ public class WMapController : MonoBehaviour
                     town.GetComponent<Town>().townKingdom != currentTurn)
                 {
                     town.GetComponent<Town>().Flip();
+					currentTurn.townIDs.Add(town.GetComponent<Town>().townID);
+					if (currentTurn == red) blue.townIDs.Remove(town.GetComponent<Town>().townID);
+					else red.townIDs.Remove(town.GetComponent<Town>().townID);
                     print("Town taken!");
                 }
 

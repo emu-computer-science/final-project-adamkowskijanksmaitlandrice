@@ -15,6 +15,7 @@ public class squadStruct {
 public class Kingdom : MonoBehaviour {
 	[Header("Set Dynamically")]
 	public List<squadStruct> squadrons;
+	public List<int> townIDs;
 	/*public List<Squad> squadrons;
 	public moraleState currentMorale;
 	public int armyBonus;*/

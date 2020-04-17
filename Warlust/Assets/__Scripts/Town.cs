@@ -8,6 +8,7 @@ public class Town : MonoBehaviour
 
     [Header("Set in Inspector")]
     public kingdomColor setKingdom;
+	public int townID;
 
     [Header("Set Dynamically")]
     public Kingdom kingdom;
@@ -30,8 +31,14 @@ public class Town : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (setKingdom == kingdomColor.red) kingdom = GameState.GS.kingdoms[0];
-        else kingdom = GameState.GS.kingdoms[1];
+        /*if (setKingdom == kingdomColor.red) kingdom = GameState.GS.kingdoms[0];
+        else kingdom = GameState.GS.kingdoms[1];*/
+		foreach (int id in GameState.GS.kingdoms[0].townIDs) {
+			if (townID == id) kingdom = GameState.GS.kingdoms[0];
+		}
+		foreach (int id in GameState.GS.kingdoms[1].townIDs) {
+			if (townID == id) kingdom = GameState.GS.kingdoms[1];
+		}
         townKingdom = kingdom;
         currentTile = WMapController.M.land.WorldToCell(transform.position);
         transform.position = WMapController.M.land.CellToWorld(currentTile);
