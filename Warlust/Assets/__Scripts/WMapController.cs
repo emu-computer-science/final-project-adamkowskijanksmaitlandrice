@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class WMapController : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class WMapController : MonoBehaviour
     public Unit archer;
     public Unit warrior;
     public Unit wizard;
+    public Text turn;
 
     [Header("Set Dynamically")]
     public Kingdom red;
@@ -32,7 +34,9 @@ public class WMapController : MonoBehaviour
     void Awake()
     {
         M = this;
-		if (GameState.GS == null) {
+        SceneManager.LoadScene(5, LoadSceneMode.Additive);
+
+        if (GameState.GS == null) {
         red = redGameObject.GetComponent<Kingdom>();
         blue = blueGameObject.GetComponent<Kingdom>();
 		/*red = GameState.GS.kingdoms[0];
@@ -78,8 +82,16 @@ public class WMapController : MonoBehaviour
 		if (Input.GetKeyDown("space")) {
 			clearMove();
 			print("End of current turn");
-			if (currentTurn == red) currentTurn = blue;
-			else  currentTurn = red;
+            if (currentTurn == red)
+            {
+                currentTurn = blue;
+                turn.text = "Blue's Turn";
+            }
+            else
+            {
+                currentTurn = red;
+                turn.text = "Red's Turn";
+            }
         }
     }
 
@@ -202,8 +214,16 @@ public class WMapController : MonoBehaviour
                     print("Town taken!");
                 }
 
-                    if (currentTurn == red) currentTurn = blue;
-            else currentTurn = red;
+            if (currentTurn == red)
+            {
+                currentTurn = blue;
+                turn.text = "Blue's Turn";
+            }
+            else
+            {
+                currentTurn = red;
+                turn.text = "Red's Turn";
+            }
             moving = null;
         }
         clearMove();

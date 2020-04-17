@@ -9472,6 +9472,7 @@ MonoBehaviour:
     type: 3}
   defenderGameObject: {fileID: 1483463670181941981, guid: 2e1b187193f67144d96c39403e190627,
     type: 3}
+  canvas: {fileID: 1945455662}
   turn: {fileID: 1022990432}
   message: {fileID: 2101145592}
   attacker: {fileID: 0}

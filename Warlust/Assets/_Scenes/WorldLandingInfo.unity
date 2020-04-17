@@ -227,13 +227,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6981132, g: 0.5991656, b: 0.0032929946, a: 1}
+  m_Color: {r: 0.80784315, g: 0.83137256, b: 0.8509804, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: b4783c3e6542cd84296eb3a5291de307, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -287,7 +287,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 500}
+  m_SizeDelta: {x: 1200, y: 675}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &975612214
 MonoBehaviour:
@@ -302,12 +302,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.69803923, g: 0.6, b: 0.003921569, a: 0.38431373}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 0}
+  m_Texture: {fileID: 2800000, guid: 61bee87012db86848bb26d7de4ad54b0, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -334,7 +334,7 @@ GameObject:
   - component: {fileID: 1078257927}
   - component: {fileID: 1078257926}
   m_Layer: 5
-  m_Name: BattleEndMsg
+  m_Name: Info
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -356,8 +356,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.000022888}
-  m_SizeDelta: {x: 400, y: 500}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1200, y: 675}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1078257926
 MonoBehaviour:
@@ -379,7 +379,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 56
+    m_FontSize: 36
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 5
@@ -390,7 +390,31 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 'You are the commander of the armies of the small Blue Kingdom.
+
+    The
+    aggressive Red Kingdom has expanded into your territory,
+
+    and now it falls
+    on you to reclaim your towns and push their forces back!
+
+
+
+    (Click on your
+    army, and then on one of the blue hexes to move.
+
+    Moving onto a Red army
+    will begin a battle, and
+
+    Moving onto a Red town will capture it.)
+
+
+    Good
+    luck!
+
+
+
+'
 --- !u!222 &1078257927
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -539,11 +563,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1503295839}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a0f2c2361cdcee4eb372df7fd1ceb81, type: 3}
+  m_Script: {fileID: 11500000, guid: d3c90a36328fb02408954dc2081c3ac2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   submitButton: {fileID: 184095535}
-  victorySong: {fileID: 8300000, guid: 6603c9314a9685243a4bbcd012eca61a, type: 3}
+  victorySong: {fileID: 0}
   text: {fileID: 1078257926}
 --- !u!1 &1739551573
 GameObject:
@@ -768,7 +792,7 @@ MonoBehaviour:
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 24
-    m_FontStyle: 0
+    m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 40
@@ -778,7 +802,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Return to the World Map
+  m_Text: Got it!
 --- !u!222 &1911407972
 CanvasRenderer:
   m_ObjectHideFlags: 0

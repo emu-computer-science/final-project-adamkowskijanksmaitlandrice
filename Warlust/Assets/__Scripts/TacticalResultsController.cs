@@ -8,9 +8,12 @@ public class TacticalResultsController : MonoBehaviour {
 	[Header("Set in Inspector")]
 	public Button submitButton;
 	public AudioClip victorySong;
+	public Text text;
 
     // Start is called before the first frame update
     void Start() {
+		if (GameState.GS.battleResult) text.text = "The attacker has defeated the defender!";
+		else text.text = "The attacker was defeated.\nThe defender has won!";
 		AudioSource audioSource = GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioSource>();
 		audioSource.Stop();
 		audioSource.clip = victorySong;

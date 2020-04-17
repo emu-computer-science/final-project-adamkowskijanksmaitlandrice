@@ -22,6 +22,7 @@ public class TMapController : MonoBehaviour
 	public GameObject armyPrefab;
     public GameObject attackerGameObject;
     public GameObject defenderGameObject;
+	public GameObject canvas;
 	public Text turn;
 	public Text message;
 
@@ -168,11 +169,14 @@ public class TMapController : MonoBehaviour
 	}
 
 	public void ArmyLost(Army loser) {
+		canvas.SetActive(false);
 		if (loser == attacker) {
 			print("The attacker was defeated.\nThe defender has won!");
+			GameState.GS.battleResult = false;
 			gEvent.initiator.SquadDefeated(gEvent.initiatorArmyID);
 		} else {
 			print("The attacker has defeated the defender!");
+			GameState.GS.battleResult = true;
 			gEvent.target.SquadDefeated(gEvent.targetID);
 		}
 		SceneManager.LoadScene("TacticalResultsScene", LoadSceneMode.Additive);

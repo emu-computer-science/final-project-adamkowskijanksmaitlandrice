@@ -16,6 +16,7 @@ public class GameState : MonoBehaviour {
 	public List<Kingdom> kingdoms;
 	public List<GameEvent> events;
 	public Kingdom currentTurn;
+	public bool battleResult;
 
 	private void Awake() {
 		if (GS == null) {
