@@ -309,26 +309,26 @@ public class Unit : MonoBehaviour
         Vector3 colorPos = new Vector3(0, -.25f, 0);
         Vector3 canvasScale = new Vector3(.1f, .1f, 1);
         gameObject.transform.localScale = spriteScale;
-        foreach (GameObject tc in GameObject.FindGameObjectsWithTag("TeamColor"))
+        Transform tc = gameObject.FindComponentInChildWithTag<Transform>("TeamColor");
+        tc.localScale = colorScale;
+        tc.localPosition = colorPos;
+        Transform cv = gameObject.FindComponentInChildWithTag<Transform>("Canvas");
+        cv.localScale = canvasScale;
+    }
+}
+
+public static class Helper
+{
+    public static T FindComponentInChildWithTag<T>(this GameObject parent, string tag) where T : Component
+    {
+        Transform t = parent.transform;
+        foreach (Transform tr in t)
         {
-            Transform tf = tc.GetComponent<Transform>();
-            foreach (Transform ptf in tc.GetComponentsInParent<Transform>())
+            if (tr.tag == tag)
             {
-                if (ptf == tf) continue;
-                tf.localScale = colorScale;
-                tf.localPosition = colorPos;
-                break;
+                return tr.GetComponent<T>();
             }
         }
-        foreach (GameObject cv in GameObject.FindGameObjectsWithTag("Canvas"))
-        {
-            Transform tf = cv.GetComponent<Transform>();
-            foreach (Transform ptf in cv.GetComponentsInParent<Transform>())
-            {
-                if (ptf == tf) continue;
-                tf.localScale = canvasScale;
-                break;
-            }
-        }
+        return null;
     }
 }
