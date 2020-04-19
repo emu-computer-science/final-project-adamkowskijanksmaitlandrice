@@ -25,6 +25,12 @@ public class TMapController : MonoBehaviour
 	public GameObject canvas;
 	public Text turn;
 	public Text message;
+	public List<Image> queueColors;
+	public List<Image> queueIcons;
+	public Sprite bow;
+	public Sprite spear;
+	public Sprite sword;
+	public Sprite wand;
 
     [Header("Set Dynamically")]
     public Army attacker;
@@ -131,6 +137,7 @@ public class TMapController : MonoBehaviour
 		moving = null;
 
 		BuildQueue();
+		DisplayQueue();
 		currentTurn = unitQueue[0].army;
 		unitQueue[0].army.activeTroops.Add(unitQueue[0]);
 		unitQueue[0].army.inactiveTroops.Remove(unitQueue[0]);
@@ -170,6 +177,33 @@ public class TMapController : MonoBehaviour
 				}
 	}
 
+	private void DisplayQueue()
+	{
+		for (int i = 0; i < unitQueue.Count && i < 9; i++)
+		{
+			Image icon = queueIcons[i].GetComponent<Image>();
+			Image iconColor = queueColors[i].GetComponent<Image>();
+			if (unitQueue[i].moveRange == 2) icon.sprite = bow;
+			else if (unitQueue[i].moveRange == 3) icon.sprite = sword;
+			else if (unitQueue[i].moveRange == 4) icon.sprite = wand;
+			else if (unitQueue[i].moveRange == 5) icon.sprite = spear;
+
+			if (unitQueue[i].army.kingdom == WMapController.M.blue) iconColor.color = Color.blue;
+			else iconColor.color = Color.red;
+			Color c = iconColor.color;
+			c.a = .25f;
+			iconColor.color = c;
+
+			icon.enabled = true;
+			iconColor.enabled = true;
+		}
+		for (int i = unitQueue.Count; i < 9; i++)
+		{
+			queueIcons[i].GetComponent<Image>().enabled = false;
+			queueColors[i].GetComponent<Image>().enabled = false;
+		}
+	}
+
 	private void AdvanceQueue()
 	{
 		unitQueue[0].army.activeTroops.Remove(unitQueue[0]);
@@ -181,6 +215,7 @@ public class TMapController : MonoBehaviour
 		unitQueue[0].army.inactiveTroops.Remove(unitQueue[0]);
 		currentTurn = unitQueue[0].army;
 		unitQueue[0].ColorOn(true);
+		DisplayQueue();
 	}
 
 	public void PlaceUnit(GameObject unit) {
