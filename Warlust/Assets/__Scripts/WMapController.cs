@@ -103,25 +103,16 @@ public class WMapController : MonoBehaviour
 			}*/
 			if (GameState.GS.currentTurn != null) currentTurn = GameState.GS.currentTurn;
 			else currentTurn = blue;
+			if (currentTurn == red) {
+				AIsTurn();
+			}
 	}
 
     // Update is called once per frame
     void Update()
     {
 		if (Input.GetKeyDown("space")) {
-			clearMove();
-			print("End of current turn");
-            if (currentTurn == red)
-            {
-                currentTurn = blue;
-                turn.text = "Blue's Turn";
-            }
-            else
-            {
-                currentTurn = red;
-                turn.text = "Red's Turn";
-            }
-			currentTurn.PayIncome();
+			NextTurn();
         }
     }
 
@@ -247,21 +238,78 @@ public class WMapController : MonoBehaviour
                     print("Town taken!");
                 }
 
-            if (currentTurn == red)
-            {
-                currentTurn = blue;
-                turn.text = "Blue's Turn";
-            }
-            else
-            {
-                currentTurn = red;
-                turn.text = "Red's Turn";
-            }
-            moving = null;
+            NextTurn();
         }
         clearMove();
-		currentTurn.PayIncome();
     }
+
+	public void NextTurn() {
+		clearMove();
+		print("End of current turn");
+        if (currentTurn == red) {
+            currentTurn = blue;
+            turn.text = "Blue's Turn";
+			currentTurn.PayIncome();
+        } else {
+            currentTurn = red;
+            turn.text = "Red's Turn";
+			currentTurn.PayIncome();
+			AIsTurn();
+        }
+	}
+
+	private void AIsTurn() {
+		Squad redArmy = null;
+		Squad blueArmy = null;
+		foreach(GameObject unit in GameObject.FindGameObjectsWithTag("Unit")) {
+			if (unit.GetComponent<Squad>().sqKingdom == red) {
+				redArmy = unit.GetComponent<Squad>();
+			} else {
+				blueArmy = unit.GetComponent<Squad>();
+			}
+		}
+		if (redArmy == null) {
+			NextTurn();
+			return;
+		}
+		redArmy.clicked();
+		int minDistance = 10000;
+		Vector3Int destination = redArmy.currentPlayerTile;
+		if (blueArmy == null) {
+			Town blueTown = null;
+			foreach (GameObject townGO in GameObject.FindGameObjectsWithTag("Town")) {
+				if (townGO.GetComponent<Town>().kingdom == blue) {
+					blueTown = townGO.GetComponent<Town>();
+					break;
+				}
+			}
+			if (blueTown != null) {
+				foreach (Vector3Int r in withinRange) {
+					int tDist = Distance(r, blueTown.currentTile);
+					if (tDist < minDistance) {
+						destination = r;
+						minDistance = tDist;
+					}
+				}
+			}
+			endMove(destination);
+		} else {
+			foreach (Vector3Int r in withinRange) {
+				int tDist = Distance(r, blueArmy.currentPlayerTile);
+				if (tDist < minDistance) {
+					destination = r;
+					minDistance = tDist;
+				}
+			}
+			endMove(destination);
+		}
+	}
+
+	private int Distance(Vector3Int a, Vector3Int b) {
+		int distance = (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y);
+		return distance;
+	}
+
 	public void TownClicked(GameObject town) {
 		TownController.town = town.GetComponent<Town>();
 		SceneManager.LoadScene("TownScene", LoadSceneMode.Additive);
