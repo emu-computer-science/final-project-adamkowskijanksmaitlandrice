@@ -33,6 +33,15 @@ public class WClickDetector : MonoBehaviour
                     return;
                 }
             }
+			foreach (GameObject town in GameObject.FindGameObjectsWithTag("Town"))
+            {
+                if (town.transform.position == pos && 
+                    town.GetComponent<Town>().kingdom == WMapController.M.currentTurn)
+                {
+                    WMapController.M.TownClicked(town);
+                    return;
+                }
+            }
             WMapController.M.endMove(cel);
         }
     }

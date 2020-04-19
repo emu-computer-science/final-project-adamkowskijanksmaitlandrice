@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/_Scenes/Tactical.unity
     guid: e1f3818edeb38104ca151c8631b134d1
   - enabled: 1
-    path: Assets/_Scenes/TacticalResultsScene.unity
+    path: Assets/_Scenes/TownScene.unity
     guid: a9711fdc795adcd46848a53cc87fbebb
   - enabled: 1
     path: Assets/_Scenes/OptionsMenu.unity
@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scenes/WorldLandingInfo.unity
     guid: f9077a49930a40c429b8bde66a5c879d
+  - enabled: 1
+    path: Assets/_Scenes/TacticalResultsScene.unity
+    guid: a7fa2c4dd7d11484199fb0836f2c484f
   m_configObjects: {}
