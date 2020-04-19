@@ -221,8 +221,9 @@ public class WMapController : MonoBehaviour
 						GameState.GS.currentTurn = red;
 						GameState.GS.events.Add(new GameEvent(blue, moving.GetComponent<Squad>().ID, red, unit.GetComponent<Squad>().ID, eventType.attacks));
 					}
+					moving.GetComponent<Squad>().SetPosition(destTile);
 					SceneManager.LoadScene("Tactical", LoadSceneMode.Single);
-                    break;
+                    return;
                 }
             }
             moving.GetComponent<Squad>().SetPosition(destTile);
