@@ -4,14 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class MenuControl : MonoBehaviour
+public class OptionsMenuControl : MonoBehaviour
 {
-	public void ButtonOptions() {
-		SceneManager.LoadScene(4);
+	public void ButtonBackToMain() {
+		SceneManager.LoadScene(0);
 	}
 
+	
 	public void ButtonQuit() {
 		Application.Quit();
 	}
-   
 }
