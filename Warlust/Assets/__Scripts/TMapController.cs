@@ -30,6 +30,7 @@ public class TMapController : MonoBehaviour
     public Army attacker;
     public Army defender;
     public Army currentTurn;
+	public Army aiArmy;
     public Unit moving;
     public mapRound roundState;
 	public List<Unit> unitQueue;
@@ -66,8 +67,12 @@ public class TMapController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-		if (attacker.kingdom == WMapController.M.blue)
+		if (attacker.kingdom == WMapController.M.blue) {
 			Canvas.FindObjectOfType<Morale>().SwapColors();
+			aiArmy = defender;
+		} else {
+			aiArmy = attacker;
+		}
 
         //makeUnit(archer, 'A', 1, -2);
         //makeUnit(warrior, 'A', -2, -1);
@@ -215,8 +220,53 @@ public class TMapController : MonoBehaviour
 		if (currentTurn == attacker) turn.text = "Defender's Turn";
 		else turn.text = "Attacker's Turn";
         moving = null;
-		message.text = "Move a unit or press \"spacebar\" to skip your turn";
+		if (currentTurn != aiArmy)
+			message.text = "Move a unit or press \"spacebar\" to skip your turn";
 		currentTurn.BeginTurn();
+		if (currentTurn == aiArmy) AIsTurn();
+	}
+
+	public void AIsTurn() {
+		List<Unit> enemyTroops;
+		if (aiArmy == attacker) enemyTroops = defender.troops;
+		else enemyTroops = attacker.troops;
+		Unit currentUnit = unitQueue[0];
+		int minDistance = 100000;
+		Unit closestUnit = null;
+		currentUnit.clicked();
+		foreach (Unit enemyUnit in enemyTroops) {
+			int tDist = Distance(enemyUnit.currentPlayerTile, currentUnit.currentPlayerTile);
+			if (tDist < minDistance) {
+				minDistance = tDist;
+				closestUnit = enemyUnit;
+			}
+		}
+		List<Vector3Int> range = currentUnit.range;
+		minDistance = 100000;
+		Vector3Int destination = currentUnit.currentPlayerTile;
+		foreach (Vector3Int r in range) {
+			int tDist = Distance(closestUnit.currentPlayerTile, r);
+			if (tDist < minDistance) {
+				minDistance = tDist;
+				destination = r;
+			}
+		}
+		currentUnit.endMove(destination);
+		range = currentUnit.range;
+		foreach (Vector3Int r in range) {
+			foreach (Unit enemyUnit in enemyTroops) {
+				if (enemyUnit.currentPlayerTile == r) {
+					currentUnit.endMove(r);
+					return;
+				}
+			}
+		}
+		NextTurn();
+	}
+
+	private int Distance(Vector3Int a, Vector3Int b) {
+		int distance = (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y);
+		return distance;
 	}
 
 	public void ArmyLost(Army loser) {

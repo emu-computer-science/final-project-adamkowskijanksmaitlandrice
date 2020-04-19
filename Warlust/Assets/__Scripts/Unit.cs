@@ -35,6 +35,10 @@ public class Unit : MonoBehaviour
     private List<Vector3Int> excludeRange;
     private Vector3Int previousTile;
 
+	public List<Vector3Int> range {
+		get {return withinRange;}
+	}
+
     void Start()
     {
         currentPlayerTile = TMapController.M.land.WorldToCell(transform.position);
