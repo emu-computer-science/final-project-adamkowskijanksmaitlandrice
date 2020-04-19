@@ -78,6 +78,7 @@ public class TMapController : MonoBehaviour
 			aiArmy = defender;
 		} else {
 			aiArmy = attacker;
+			AIsTurn();
 		}
 
         //makeUnit(archer, 'A', 1, -2);
