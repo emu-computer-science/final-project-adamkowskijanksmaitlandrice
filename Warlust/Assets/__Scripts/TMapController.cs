@@ -15,10 +15,10 @@ public class TMapController : MonoBehaviour
     public Tilemap highlights;
     public TileBase moveHighlight;
     public TileBase attackHighlight;
-    public GameObject archer;
-    public GameObject warrior;
-    public GameObject wizard;
-	public GameObject knight;
+    public Unit archer;
+    public Unit warrior;
+    public Unit wizard;
+	public Unit knight;
 	public GameObject armyPrefab;
     public GameObject attackerGameObject;
     public GameObject defenderGameObject;
@@ -32,8 +32,9 @@ public class TMapController : MonoBehaviour
     public Army currentTurn;
     public Unit moving;
     public mapRound roundState;
+	public List<Unit> unitQueue;
 
-    public static TMapController M;
+	public static TMapController M;
 
 	private GameEvent gEvent;
 
@@ -68,10 +69,6 @@ public class TMapController : MonoBehaviour
 		if (attacker.kingdom == WMapController.M.blue)
 			Canvas.FindObjectOfType<Morale>().SwapColors();
 
-		currentTurn = attacker;
-        roundState = mapRound.moving;
-        moving = null;
-
         //makeUnit(archer, 'A', 1, -2);
         //makeUnit(warrior, 'A', -2, -1);
         //makeUnit(wizard, 'D', 7, 1);
@@ -82,6 +79,12 @@ public class TMapController : MonoBehaviour
     void Update()
     {
 		if (Input.GetKeyDown("space"))
+		{
+			highlights.ClearAllTiles();
+			roundState = mapRound.moving;
+			NextTurn();
+		}
+		/*
 		{
 			highlights.ClearAllTiles();
 			roundState = mapRound.moving;
@@ -104,6 +107,7 @@ public class TMapController : MonoBehaviour
 				defender.EndTurn();
 			}
 		}
+		*/
 		else if (roundState == mapRound.attacking && Input.GetKeyDown("backspace"))
 		{
 			moving.GetComponent<Unit>().Undo();
@@ -117,10 +121,61 @@ public class TMapController : MonoBehaviour
 		attacker.OnTacticalBattleStart();
 		defender.OnTacticalBattleStart();
 
-		attacker.BeginTurn();
-		defender.EndTurn();
-		turn.text = "Attacker's Turn";
+		//currentTurn = attacker;
+		roundState = mapRound.moving;
+		moving = null;
+
+		BuildQueue();
+		currentTurn = unitQueue[0].army;
+		unitQueue[0].army.activeTroops.Add(unitQueue[0]);
+		unitQueue[0].army.inactiveTroops.Remove(unitQueue[0]);
+		unitQueue[0].ColorOn(true);
+
+		currentTurn.BeginTurn();
+		if (currentTurn == attacker) turn.text = "Defender's Turn";
+		else turn.text = "Attacker's Turn";
 		message.text = "Move a unit or press \"spacebar\" to skip your turn";
+	}
+
+	private void BuildQueue()
+	{
+		unitQueue = new List<Unit>();
+		foreach (Unit unit in attacker.troops) unitQueue.Add(unit);
+		foreach (Unit unit in defender.troops) unitQueue.Add(unit);
+		for (int i = 0; i < unitQueue.Count - 1; i++)
+		{
+			int swap = Random.Range(i, unitQueue.Count);
+			Unit temp = unitQueue[i];
+			unitQueue[i] = unitQueue[swap];
+			unitQueue[swap] = temp;
+		}
+		SortQueue();
+		foreach (Unit unit in unitQueue) print(unit);
+	}
+
+	private void SortQueue()
+	{
+		for (int i = 0; i < unitQueue.Count - 1; i++)
+			for (int j = i + 1; j < unitQueue.Count; j++)
+				if (unitQueue[j].moveRange > unitQueue[i].moveRange)
+				{
+					Unit temp = unitQueue[i];
+					unitQueue[i] = unitQueue[j];
+					unitQueue[j] = temp;
+				}
+	}
+
+	private void AdvanceQueue()
+	{
+		unitQueue[0].army.activeTroops.Remove(unitQueue[0]);
+		unitQueue[0].army.inactiveTroops.Add(unitQueue[0]);
+		unitQueue.Add(unitQueue[0]);
+		unitQueue[0].ColorOn(false);
+		unitQueue.RemoveAt(0);
+		unitQueue[0].army.activeTroops.Add(unitQueue[0]);
+		unitQueue[0].army.inactiveTroops.Remove(unitQueue[0]);
+		currentTurn = unitQueue[0].army;
+		unitQueue[0].ColorOn(true);
 	}
 
 	public void PlaceUnit(GameObject unit) {
@@ -156,13 +211,9 @@ public class TMapController : MonoBehaviour
 
 	public void NextTurn() {
 		currentTurn.EndTurn();
-		if (currentTurn == attacker) {
-            currentTurn = defender;
-			turn.text = "Defender's Turn";
-		} else {
-			currentTurn = attacker;
-			turn.text = "Attacker's Turn";
-		}
+		AdvanceQueue();
+		if (currentTurn == attacker) turn.text = "Defender's Turn";
+		else turn.text = "Attacker's Turn";
         moving = null;
 		message.text = "Move a unit or press \"spacebar\" to skip your turn";
 		currentTurn.BeginTurn();

@@ -40,7 +40,9 @@ public class Army : MonoBehaviour {
 	}
 
     // Start is called before the first frame update
-    void Start() {
+    void Start() 
+	{
+
     }
 
     // Update is called once per frame
@@ -53,6 +55,7 @@ public class Army : MonoBehaviour {
 		/*foreach (UnitDescription description in descriptions) {
 			MakeUnit(description);
 		}*/
+		foreach (Unit unit in troops) unit.ColorOn(false);
 		armyBonus = 0;
 		currentMorale = moraleState.neutral;
 	}
@@ -108,7 +111,8 @@ public class Army : MonoBehaviour {
 		TMapController.M.PlaceUnit(unit);
         unitScript.army = this;
 		troops.Add(unitScript);
-		activeTroops.Add(unitScript);
+		inactiveTroops.Add(unitScript);
+		unitScript.ColorOn(true);
 	}
 
 	//This is just a temprorary function until we implement the morale system
@@ -128,12 +132,14 @@ public class Army : MonoBehaviour {
 	}
 
 	public void BeginTurn() {
+		/*
 		if (activeTroops.Count == 0) {
 			List<Unit> temp = activeTroops;
 			activeTroops = inactiveTroops;
 			inactiveTroops = temp;
 			foreach (Unit u in activeTroops) u.ColorOn(true);
 		}
+		*/
 		foreach (Unit u in activeTroops) {
 			u.StartTurn();
 		}
@@ -150,6 +156,7 @@ public class Army : MonoBehaviour {
 		inactiveTroops.Add(movedUnit);
 		movedUnit.ColorOn(false);
 	}
+
 	public void UndoMove(Unit movedUnit) {
 		inactiveTroops.Remove(movedUnit);
 		activeTroops.Add(movedUnit);
@@ -160,6 +167,7 @@ public class Army : MonoBehaviour {
 		troops.Remove(deadUnit);
 		activeTroops.Remove(deadUnit);
 		inactiveTroops.Remove(deadUnit);
+		TMapController.M.unitQueue.Remove(deadUnit);
 		if (troops.Count == 0)
 			TMapController.M.ArmyLost(this);
 		else Morale.M.MoraleLost(this, deadUnit.morale);

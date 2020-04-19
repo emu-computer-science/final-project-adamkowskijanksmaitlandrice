@@ -9462,10 +9462,10 @@ MonoBehaviour:
   highlights: {fileID: 1217956891}
   moveHighlight: {fileID: 11400000, guid: eab282cc555164a45b5b97134c35d664, type: 2}
   attackHighlight: {fileID: 11400000, guid: 8a89cfca32c75854b8f3b086a2482589, type: 2}
-  archer: {fileID: 4920221110158147957, guid: 7b7872ec1dfd21d46928989939c66848, type: 3}
-  warrior: {fileID: 2556782367435074416, guid: 766f5d2c8371eae4c881cbc6b288ba86, type: 3}
-  wizard: {fileID: 5737206566106309406, guid: 4d49778cd8594a74eb6c2132bf306566, type: 3}
-  knight: {fileID: 1658275064891294837, guid: b8f5c11d84e638245a078a1871c5f06f, type: 3}
+  archer: {fileID: 4420508786855718732, guid: 7b7872ec1dfd21d46928989939c66848, type: 3}
+  warrior: {fileID: 5618557026014022287, guid: 766f5d2c8371eae4c881cbc6b288ba86, type: 3}
+  wizard: {fileID: 1012696754557078435, guid: 4d49778cd8594a74eb6c2132bf306566, type: 3}
+  knight: {fileID: 7336081203296276128, guid: b8f5c11d84e638245a078a1871c5f06f, type: 3}
   armyPrefab: {fileID: 1483463670181941981, guid: 31a6345a7602ba44d9bcd5266758b68a,
     type: 3}
   attackerGameObject: {fileID: 1483463670181941981, guid: 2e1b187193f67144d96c39403e190627,
