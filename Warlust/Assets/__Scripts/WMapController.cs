@@ -121,6 +121,7 @@ public class WMapController : MonoBehaviour
                 currentTurn = red;
                 turn.text = "Red's Turn";
             }
+			currentTurn.PayIncome();
         }
     }
 
@@ -259,5 +260,10 @@ public class WMapController : MonoBehaviour
             moving = null;
         }
         clearMove();
+		currentTurn.PayIncome();
     }
+	public void TownClicked(GameObject town) {
+		TownController.town = town.GetComponent<Town>();
+		SceneManager.LoadScene("TownScene", LoadSceneMode.Additive);
+	}
 }

@@ -9,6 +9,9 @@ public class Town : MonoBehaviour
     [Header("Set in Inspector")]
     public kingdomColor setKingdom;
 	public int townID;
+	//This is a list of the units that will be in an army bought in this town
+	public string[] units = new string[] {"archer", "warrior", "wizard"};
+	public int armyCost = 500;	//The cost to buy the army
 
     [Header("Set Dynamically")]
     public Kingdom kingdom;
@@ -63,4 +66,15 @@ public class Town : MonoBehaviour
             townKingdom = kingdom;
         }
     }
+
+	public void BuyArmy() {
+		int[] coordinates = new int[2];
+		coordinates[0] = currentTile.x;
+		coordinates[1] = currentTile.y;
+		squadStruct tSquadStruct = new squadStruct(coordinates, units);
+		int armyID = kingdom.squadrons.Count;
+		kingdom.AddSquadron(tSquadStruct);
+		WMapController.M.makeSquad(tSquadStruct, kingdom, armyID);
+		kingdom.gold -= armyCost;
+	}
 }

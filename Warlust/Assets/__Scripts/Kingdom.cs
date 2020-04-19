@@ -16,6 +16,7 @@ public class Kingdom : MonoBehaviour {
 	[Header("Set Dynamically")]
 	public List<squadStruct> squadrons;
 	public List<int> townIDs;
+	public int gold;
 	/*public List<Squad> squadrons;
 	public moraleState currentMorale;
 	public int armyBonus;*/
@@ -41,5 +42,10 @@ public class Kingdom : MonoBehaviour {
 
 	public void SquadDefeated(int squadID) {
 		squadrons.Remove(squadrons[squadID]);
+	}
+
+	public void PayIncome() {
+		gold = gold + (townIDs.Count * 100);
+		print("Town Count: " + townIDs.Count);
 	}
 }
