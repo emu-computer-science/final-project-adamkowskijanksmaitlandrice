@@ -146,6 +146,7 @@ public class TMapController : MonoBehaviour
 		if (currentTurn == attacker) turn.text = "Defender's Turn";
 		else turn.text = "Attacker's Turn";
 		message.text = "Move a unit or press \"spacebar\" to skip your turn";
+		if (unitQueue[0].army == aiArmy) Invoke("AIsTurn", 1f);
 	}
 
 	private void BuildQueue()
@@ -281,16 +282,16 @@ public class TMapController : MonoBehaviour
 		if (currentUnit.maxAtkRange > 1) {
 			int maxAtkRange = currentUnit.maxAtkRange;
 			minDistance = 100000;
-			Vector3Int minTarget = target;
-			for (int i = 0; i < 6; i++) {
-				Vector3Int tTarget = target;
+			Vector3Int minTarget = new Vector3Int(0,0,0);
+			for (int i = 0; i < 4; i++) {
+				Vector3Int tTarget = new Vector3Int(0,0,0);
 				switch (i) {
-					case 0: tTarget = new Vector3Int(target.x-maxAtkRange, target.y-maxAtkRange, target.z); break;
-					case 1: tTarget = new Vector3Int(target.x-maxAtkRange, target.y, target.z); break;
-					case 2: tTarget = new Vector3Int(target.x, target.y-maxAtkRange, target.z); break;
-					case 3: tTarget = new Vector3Int(target.x+maxAtkRange, target.y+maxAtkRange, target.z); break;
-					case 4: tTarget = new Vector3Int(target.x+maxAtkRange, target.y, target.z); break;
-					case 5: tTarget = new Vector3Int(target.x, target.y+maxAtkRange, target.z); break;
+					//case 0: tTarget = new Vector3Int(target.x-maxAtkRange, target.y-maxAtkRange, target.z); break;
+					case 0: tTarget = new Vector3Int(target.x-maxAtkRange, target.y, target.z); break;
+					case 1: tTarget = new Vector3Int(target.x, target.y-maxAtkRange, target.z); break;
+					//case 3: tTarget = new Vector3Int(target.x+maxAtkRange, target.y+maxAtkRange, target.z); break;
+					case 2: tTarget = new Vector3Int(target.x+maxAtkRange, target.y, target.z); break;
+					case 3: tTarget = new Vector3Int(target.x, target.y+maxAtkRange, target.z); break;
 				}
 				int tDist = Distance(tTarget, currentUnit.currentPlayerTile);
 				if (tDist < minDistance) {
