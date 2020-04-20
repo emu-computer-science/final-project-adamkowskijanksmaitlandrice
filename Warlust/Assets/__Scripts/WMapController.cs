@@ -104,7 +104,7 @@ public class WMapController : MonoBehaviour
 			if (GameState.GS.currentTurn != null) currentTurn = GameState.GS.currentTurn;
 			else currentTurn = blue;
 			if (currentTurn == red) {
-				AIsTurn();
+				Invoke("AIsTurn",1f);
 			}
 	}
 
@@ -255,7 +255,7 @@ public class WMapController : MonoBehaviour
             currentTurn = red;
             turn.text = "Red's Turn";
 			currentTurn.PayIncome();
-			AIsTurn();
+			Invoke("AIsTurn", 1f);
         }
 	}
 

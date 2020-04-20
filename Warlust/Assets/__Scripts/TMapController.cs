@@ -78,7 +78,7 @@ public class TMapController : MonoBehaviour
 			aiArmy = defender;
 		} else {
 			aiArmy = attacker;
-			AIsTurn();
+			//AIsTurn();
 		}
 
         //makeUnit(archer, 'A', 1, -2);
@@ -92,8 +92,6 @@ public class TMapController : MonoBehaviour
     {
 		if (Input.GetKeyDown("space"))
 		{
-			highlights.ClearAllTiles();
-			roundState = mapRound.moving;
 			NextTurn();
 		}
 		/*
@@ -251,6 +249,8 @@ public class TMapController : MonoBehaviour
     }
 
 	public void NextTurn() {
+		highlights.ClearAllTiles();
+		roundState = mapRound.moving;
 		currentTurn.EndTurn();
 		AdvanceQueue();
 		if (currentTurn == attacker) turn.text = "Defender's Turn";
@@ -259,7 +259,7 @@ public class TMapController : MonoBehaviour
 		if (currentTurn != aiArmy)
 			message.text = "Move a unit or press \"spacebar\" to skip your turn";
 		currentTurn.BeginTurn();
-		if (currentTurn == aiArmy) AIsTurn();
+		if (currentTurn == aiArmy) Invoke("AIsTurn", 1f);
 	}
 
 	public void AIsTurn() {
@@ -277,11 +277,34 @@ public class TMapController : MonoBehaviour
 				closestUnit = enemyUnit;
 			}
 		}
+		Vector3Int target = closestUnit.currentPlayerTile;
+		if (currentUnit.maxAtkRange > 1) {
+			int maxAtkRange = currentUnit.maxAtkRange;
+			minDistance = 100000;
+			Vector3Int minTarget = target;
+			for (int i = 0; i < 6; i++) {
+				Vector3Int tTarget = target;
+				switch (i) {
+					case 0: tTarget = new Vector3Int(target.x-maxAtkRange, target.y-maxAtkRange, target.z); break;
+					case 1: tTarget = new Vector3Int(target.x-maxAtkRange, target.y, target.z); break;
+					case 2: tTarget = new Vector3Int(target.x, target.y-maxAtkRange, target.z); break;
+					case 3: tTarget = new Vector3Int(target.x+maxAtkRange, target.y+maxAtkRange, target.z); break;
+					case 4: tTarget = new Vector3Int(target.x+maxAtkRange, target.y, target.z); break;
+					case 5: tTarget = new Vector3Int(target.x, target.y+maxAtkRange, target.z); break;
+				}
+				int tDist = Distance(tTarget, currentUnit.currentPlayerTile);
+				if (tDist < minDistance) {
+					minDistance = tDist;
+					minTarget = tTarget;
+				}
+			}
+			target = minTarget;
+		}
 		List<Vector3Int> range = currentUnit.range;
 		minDistance = 100000;
 		Vector3Int destination = currentUnit.currentPlayerTile;
 		foreach (Vector3Int r in range) {
-			int tDist = Distance(closestUnit.currentPlayerTile, r);
+			int tDist = Distance(target, r);
 			if (tDist < minDistance) {
 				minDistance = tDist;
 				destination = r;
@@ -297,7 +320,7 @@ public class TMapController : MonoBehaviour
 				}
 			}
 		}
-		NextTurn();
+		Invoke("NextTurn", 1f);
 	}
 
 	private int Distance(Vector3Int a, Vector3Int b) {
