@@ -152,7 +152,7 @@ public class WMapController : MonoBehaviour
 
     public void clearMove()
     {
-        highlights.ClearAllTiles();
+        ClearHighlights();
         withinRange = new List<Vector3Int>();
         excludeRange = new List<Vector3Int>();
     }
@@ -167,7 +167,7 @@ public class WMapController : MonoBehaviour
         for (int i = 0; i < moveRange; i++)
             queue = updateQueue(queue);
         foreach (Vector3Int v in withinRange)
-            highlights.SetTile(v, moveHighlight);
+           SetHighlight(v);
     }
 
     public List<Vector3Int> updateQueue(List<Vector3Int> queue)
@@ -188,8 +188,13 @@ public class WMapController : MonoBehaviour
             foreach (Vector3Int dir in new Vector3Int[] {
                 left, right, upLeft, upRight, downLeft, downRight})
             {
-                if (obstacles.HasTile(dir) || !land.HasTile(dir)) continue;
-                if (!withinRange.Contains(dir) && !excludeRange.Contains(dir)) withinRange.Add(dir);
+				tileStruct tileHas = TileHas(dir);
+                if (tileHas.obstacle || !tileHas.land) continue;
+				if (!withinRange.Contains(dir) && !excludeRange.Contains(dir) &&
+					!(tileHas.squad && tileHas.squad.kingdom == currentTurn))
+				{
+					withinRange.Add(dir);
+				}
                 queue2.Add(dir);
             }
         }
@@ -207,42 +212,78 @@ public class WMapController : MonoBehaviour
 
         if (withinRange.Contains(destTile))
         {
-            foreach (GameObject unit in GameObject.FindGameObjectsWithTag("Unit"))
+			tileStruct tileHas = TileHas(destTile);
+            if (tileHas.squad != null && tileHas.squad.sqKingdom != currentTurn)
             {
-                if (land.WorldToCell(unit.transform.position) == destTile &&
-                    unit.GetComponent<Squad>().sqKingdom != currentTurn)
-                {
-                    print("Attack!");
-                    // do the actual stuff here...
-					if (currentTurn == red) {
-						GameState.GS.currentTurn = blue;
-						GameState.GS.events.Add(new GameEvent(red, moving.GetComponent<Squad>().ID, blue, unit.GetComponent<Squad>().ID, eventType.attacks));
-					} else {
-						GameState.GS.currentTurn = red;
-						GameState.GS.events.Add(new GameEvent(blue, moving.GetComponent<Squad>().ID, red, unit.GetComponent<Squad>().ID, eventType.attacks));
-					}
-					moving.GetComponent<Squad>().SetPosition(destTile);
-					SceneManager.LoadScene("Tactical", LoadSceneMode.Single);
-                    return;
-                }
+                print("Attack!");
+                // do the actual stuff here...
+				if (currentTurn == red) {
+					GameState.GS.currentTurn = blue;
+					GameState.GS.events.Add(new GameEvent(red, moving.GetComponent<Squad>().ID, blue, tileHas.squad.ID, eventType.attacks));
+				} else {
+					GameState.GS.currentTurn = red;
+					GameState.GS.events.Add(new GameEvent(blue, moving.GetComponent<Squad>().ID, red, tileHas.squad.ID, eventType.attacks));
+				}
+				moving.GetComponent<Squad>().SetPosition(destTile);
+				SceneManager.LoadScene("Tactical", LoadSceneMode.Single);
+                return;
             }
             moving.GetComponent<Squad>().SetPosition(destTile);
 
-            foreach (GameObject town in GameObject.FindGameObjectsWithTag("Town"))
-                if (land.WorldToCell(town.transform.position) == destTile &&
-                    town.GetComponent<Town>().townKingdom != currentTurn)
-                {
-                    town.GetComponent<Town>().Flip();
-					currentTurn.townIDs.Add(town.GetComponent<Town>().townID);
-					if (currentTurn == red) blue.townIDs.Remove(town.GetComponent<Town>().townID);
-					else red.townIDs.Remove(town.GetComponent<Town>().townID);
-                    print("Town taken!");
-                }
-
+			if (tileHas.town != null && tileHas.town.townKingdom != currentTurn)
+			{
+				tileHas.town.Flip();
+				currentTurn.townIDs.Add(tileHas.town.townID);
+				if (currentTurn == red) blue.townIDs.Remove(tileHas.town.townID);
+				else red.townIDs.Remove(tileHas.town.townID);
+                print("Town taken!");
+            }
             NextTurn();
         }
         clearMove();
     }
+
+	public struct tileStruct
+	{
+		public bool land;
+		public bool obstacle;
+		public Town town;
+		public Squad squad;
+	}
+
+	public tileStruct TileHas(Vector3Int pos)
+	{
+		tileStruct tileHas = new tileStruct();
+		if (land.HasTile(pos)) tileHas.land = true;
+		if (obstacles.HasTile(pos)) tileHas.obstacle = true;
+		foreach (GameObject town in GameObject.FindGameObjectsWithTag("Town"))
+		{
+			if (land.WorldToCell(town.transform.position) == pos)
+			{
+				tileHas.town = town.GetComponent<Town>();
+				break;
+			}
+		}
+		foreach (GameObject squad in GameObject.FindGameObjectsWithTag("Unit"))
+		{
+			if (land.WorldToCell(squad.transform.position) == pos)
+			{
+				tileHas.squad = squad.GetComponent<Squad>();
+				break;
+			}
+		}
+		return tileHas;
+	}
+
+	public void SetHighlight(Vector3Int pos)
+	{
+		highlights.SetTile(pos, moveHighlight);
+	}
+
+	public void ClearHighlights()
+	{
+		highlights.ClearAllTiles();
+	}
 
 	public void NextTurn() {
 		clearMove();
